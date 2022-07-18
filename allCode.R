@@ -25,8 +25,9 @@ use_mit_license()
 # open function for documentation
 use_r('importSampleTxiAndSaveRds')
 # place cursor in somewhere function defanation
-# Then code -> inserct Roxygen skeleton
+# Then code -> insert Roxygen skeleton
 # then add required information
 # then
 document()
+
 
