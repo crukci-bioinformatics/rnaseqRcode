@@ -1,6 +1,6 @@
 # function for checking arguments
-checkArg_importSampleTxiAndSaveRds <- function(s_sheet, quantOut, tx2gene){
-  assert_that(is_validMetaData(s_sheet))
+checkArg_importSampleTxiAndSaveRds <- function(s_sheet, quantOut, tx2gene, ...){
+  assert_that(is_validMetaData(s_sheet, columnsToCheck = 'SampleGroup'))
   assert_that(is_validTx2gene(tx2gene))
   assert_that(dir.exists(quantOut))
 }
