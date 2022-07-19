@@ -4,7 +4,7 @@
 
 #' @import assertthat
 #' @importFrom  magrittr %>%
-#' @export is_validMetaData
+#' @export
 
 
 ##################################################################################
@@ -22,6 +22,18 @@ is_validMetaData <- function( s_sheet, columnsToCheck ){
     }
   }else{
     message('Metadata should be a data frame')
+    okay <- FALSE
+  }
+  return(okay)
+}
+##################################################################################
+# check if tx2gene is valid
+is_validTx2gene <- function(tx2gene){
+  okay <- FALSE
+  if(is.data.frame(tx2gene)){
+    okay <- TRUE
+  }else{
+    message( 'tx2gene should be a data frame' )
     okay <- FALSE
   }
   return(okay)

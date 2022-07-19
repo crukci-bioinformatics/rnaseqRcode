@@ -1,3 +1,9 @@
+# function for checking arguments
+checkArg_importSampleTxiAndSaveRds <- function(s_sheet, quantOut, tx2gene){
+  assert_that(is_validMetaData(s_sheet))
+  assert_that(is_validTx2gene(tx2gene))
+  assert_that(dir.exists(quantOut))
+}
 #' Save combined txi object after reading sample level txi data
 #'
 #' @param s_sheet A data frame with at least one column named SampleName.
@@ -14,6 +20,7 @@
 #' @importFrom stringr str_c
 #'
 importSampleTxiAndSaveRds <- function(s_sheet, quantOut, tx2gene, quantTool="salmon", save=TRUE) {
+  checkArg_importSampleTxiAndSaveRds(s_sheet, quantOut, tx2gene)
 
   if(is.data.frame(s_sheet) & dir.exists(quantOut) & is.data.frame(tx2gene)) {
     txiPaths <- file.path( quantOut, s_sheet$SampleName, "quant.sf")
