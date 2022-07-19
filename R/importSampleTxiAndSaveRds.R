@@ -14,13 +14,19 @@
 #' @importFrom stringr str_c
 #'
 importSampleTxiAndSaveRds <- function(s_sheet, quantOut, tx2gene, quantTool="salmon", save=TRUE) {
-  txiPaths <- file.path( quantOut, s_sheet$SampleName, "quant.sf")
-  names(txiPaths) <- s_sheet$SampleName
-  txi <- tximport(txiPaths, type = quantTool, tx2gene = tx2gene)
 
-  if(save) {
-    txiOutFile <- str_c(quantOut, "txi.rds", sep='/')
-    saveRDS(txi, file = txiOutFile)
+  if(is.data.frame(s_sheet) & dir.exists(quantOut) & is.data.frame(tx2gene)) {
+    txiPaths <- file.path( quantOut, s_sheet$SampleName, "quant.sf")
+    names(txiPaths) <- s_sheet$SampleName
+    txi <- tximport(txiPaths, type = quantTool, tx2gene = tx2gene)
+
+    if(save) {
+      txiOutFile <- str_c(quantOut, "txi.rds", sep='/')
+      saveRDS(txi, file = txiOutFile)
+    }
+    return(txi)
+  } else {
+    message("Check arguments for 'importSampleTxiAndSaveRds' function")
+
   }
-  return(txi)
 }

@@ -22,6 +22,8 @@ check()
 # add licence
 use_mit_license()
 
+###################################################################################
+# importSampleTxiAndSaveRds
 # add documentation
 # open function for documentation
 use_r('importSampleTxiAndSaveRds')
@@ -34,9 +36,29 @@ document()
 txi <- importSampleTxiAndSaveRds(s_sheet = s_sheet,
                                  quantOut = 'data/quantOut',
                                  tx2gene = tx2gene)
+###################################################################################
+# transformCounts
 rawCounts <- txi$counts
 mode(rawCounts) <- 'integer'
 
 use_r('transformCounts')
 
+# add documentation using roxygen2
+document()
+
+# load functions
+load_all()
+trnCounts <- transformCounts(rawCounts = rawCounts, countsCutOff = 10, FUN = vst)
+###################################################################################
+
+
+###################################################################################
+# PCA plos
+use_r('getPcaPlot')
+###################################################################################
+
+###################################################################################
+# function argument checking functions
+use_r('checkArguments')
+###################################################################################
 
