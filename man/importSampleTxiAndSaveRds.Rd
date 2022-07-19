@@ -29,6 +29,3 @@ a txi object
 \description{
 Save combined txi object after reading sample level txi data
 }
-\examples{
-
-}

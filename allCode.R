@@ -3,6 +3,7 @@ library(devtools)
 #use_git()
 library(tximport)
 library(tidyverse)
+library(DESeq2)
 s_sheet <- read_csv("data/samplesheet_corrected.csv")
 quantOut <- "data/quantOut"
 tx2gene <- read_tsv("data/references/tx2gene.tsv")
@@ -24,10 +25,18 @@ use_mit_license()
 # add documentation
 # open function for documentation
 use_r('importSampleTxiAndSaveRds')
-# place cursor in somewhere function defanation
+# place cursor in somewhere function defamation
 # Then code -> insert Roxygen skeleton
 # then add required information
 # then
 document()
+
+txi <- importSampleTxiAndSaveRds(s_sheet = s_sheet,
+                                 quantOut = 'data/quantOut',
+                                 tx2gene = tx2gene)
+rawCounts <- txi$counts
+mode(rawCounts) <- 'integer'
+
+use_r('transformCounts')
 
 
