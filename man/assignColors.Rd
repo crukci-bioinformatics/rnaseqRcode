@@ -4,12 +4,12 @@
 \alias{assignColors}
 \title{Assign colors to samples / sample groups}
 \usage{
-assignColors(s_sheet, colorBy = "SampleGroup")
+assignColors(s_sheet, colorByCol = "SampleGroup")
 }
 \arguments{
 \item{s_sheet, }{a data frame; metadata sheet}
 
-\item{colorBy}{character vector of length 1; column name of the metadata sheet for color assignment.}
+\item{colorByCol}{character vector of length 1; column name of the metadata sheet for color assignment.}
 }
 \value{
 a named vector of colors

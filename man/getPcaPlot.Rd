@@ -20,6 +20,9 @@ getPcaPlot(
 
 \item{pcaShapeFac}{a character vector with one value; column name in a sample sheet for PCA shape aesthetic}
 }
+\value{
+a plot
+}
 \description{
 get PCA plots given counts matrix and sample sheet
 }

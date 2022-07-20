@@ -12,7 +12,7 @@ checkArg_getPcaPlot <- function(countsDat, s_sheet, columnsToCheck) {
 #' @param pcaColFactor a character vector with one value; column name in a sample sheet for PCA color aesthetic
 #' @param pcaShapeFac a character vector with one value; column name in a sample sheet for PCA shape aesthetic
 #'
-#' @return NULL
+#' @return a plot
 #' @export getPcaPlot
 #'
 #' @examples
@@ -32,6 +32,6 @@ getPcaPlot <- function(countsDat, s_sheet, pcaColFactor="SampleGroup", pcaShapeF
                 ) +
     theme_classic()
 
-  print(p)
+  return(p)
 
 }

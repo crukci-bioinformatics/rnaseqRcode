@@ -1,28 +1,14 @@
 Package: rnaseqRcode
-Title: R Code for nf-ranseq Pipeline Based on Salmon.
-Version: 0.0.0.2
+Title: R Code for nfranseq Pipeline Based on Salmon
+Version: 0.0.0.1
 Authors@R: 
     person("Chandra", "Chilamakuri", , "Chandra.Chilamakuri@cruk.cam.ac.uk", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
 Description: Functionality for reading transcript level quantification tools
     such as salmon. This package provide tools for QC and diffrential expression 
     analysis using DESeq2
+    
 License: MIT + file LICENSE
-Imports: 
-    RColorBrewer,
-    assertthat,
-    ggfortify,
-    ggplot2,
-    grDevices,
-    DESeq2,
-    dplyr,
-    ggdendro,
-    magrittr,
-    purrr,
-    stats,
-    stringr,
-    tximport,
-    utils
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2

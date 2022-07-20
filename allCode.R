@@ -55,6 +55,7 @@ trnCounts <- transformCounts(rawCounts = rawCounts, countsCutOff = 10, FUN = vst
 ###################################################################################
 # PCA plos
 use_r('getPcaPlot')
+getPcaPlot(countsDat = trnCounts, s_sheet = s_sheet,pcaColFactor = 'SampleGroup')
 ###################################################################################
 
 ###################################################################################
@@ -65,10 +66,17 @@ use_r('checkArguments')
 ###################################################################################
 # assign colors
 use_r('assignColors')
-
+assignColors(s_sheet = s_sheet, colorByCol = 'SampleName')
 ###################################################################################
 
 ###################################################################################
 # hierarchical clustering plot
 use_r('hierarchicalClustPlot')
+hierarchicalClustPlot(countsDat=trnCounts, s_sheet = s_sheet, colorByCol = 'SampleGroup', title = 'XXX' )
+###################################################################################
+
+
+###################################################################################
+# how to add package name to DESCRIPTION file?
+usethis::use_package('ggplot2')
 ###################################################################################

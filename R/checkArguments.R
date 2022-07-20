@@ -4,6 +4,9 @@
 
 #' @import assertthat
 #' @importFrom  magrittr %>%
+#' @importFrom grDevices col2rgb
+#' @importFrom stringr str_c
+#' @importFrom purrr map_lgl
 #' @export
 
 
@@ -37,5 +40,37 @@ is_validTx2gene <- function(tx2gene){
     okay <- FALSE
   }
   return(okay)
+}
+##################################################################################
+
+##################################################################################
+# is color valid?
+is_validColor <- function(color){
+  tests <- map_lgl(color, ~tryCatch(is.matrix(col2rgb(.x)),
+                                     error = function(e) FALSE))
+  all(tests)
+}
+##################################################################################
+
+##################################################################################
+# check sample colors for plotting
+is_validSampleColors <- function(s_sheet, sampleColors, colorByCol ){
+  assert_that(is_validColor(sampleColors))
+  colnm <- names(sampleColors)
+
+  colbynm <- s_sheet[[colorByCol]] %>% unique()
+
+
+  assert_that(!is.null(colnm),
+              msg = str_c("sampleColors should be a named vector, where the ",
+                          "names are values in the ", colorByCol, " column of ",
+                          "the sample sheet"))
+  assert_that(length(colbynm)==length(colnm),
+              msg = str_c("sampleColors should provide a color for each ",
+                          "value in the ", colorByCol, " column of the s_sheet ",
+                          "object"))
+  assert_that(all(colbynm %in% colnm) && all(colnm %in% colbynm),
+              msg = str_c("The names of sampleColors do not match the values ",
+                          "in the ", s_sheet, " column of the s_sheet object"))
 }
 ##################################################################################
