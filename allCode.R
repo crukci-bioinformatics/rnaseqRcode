@@ -88,3 +88,10 @@ use_r("getReadCountsFromSalmonLogs")
 
 readsPerSample <- getReadCountsFromSalmonLogs(s_sheet = s_sheet, quantOut = quantOut)
 ###################################################################################
+
+###################################################################################
+# reads per sample barplot
+use_r('readsPerSampleBarPlot')
+
+readsPerSampleBarPlot(readCounts = readsPerSample)
+###################################################################################
