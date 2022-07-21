@@ -22,7 +22,9 @@ Imports:
     stats,
     stringr,
     tximport,
-    utils
+    utils,
+    readr,
+    tidyr
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2

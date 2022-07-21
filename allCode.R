@@ -80,3 +80,11 @@ hierarchicalClustPlot(countsDat=trnCounts, s_sheet = s_sheet, colorByCol = 'Samp
 # how to add package name to DESCRIPTION file?
 usethis::use_package('ggplot2')
 ###################################################################################
+
+
+###################################################################################
+# get total reads from salmon output
+use_r("getReadCountsFromSalmonLogs")
+
+readsPerSample <- getReadCountsFromSalmonLogs(s_sheet = s_sheet, quantOut = quantOut)
+###################################################################################

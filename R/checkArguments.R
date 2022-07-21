@@ -74,3 +74,16 @@ is_validSampleColors <- function(s_sheet, sampleColors, colorByCol ){
                           "in the ", s_sheet, " column of the s_sheet object"))
 }
 ##################################################################################
+
+
+##################################################################################
+# check if files exists
+is_fileExists <- function(filesToCheck){
+
+  filesToCheck %>%
+    map_lgl( function(x){
+      file.exists(x)
+    }) %>%
+    all()
+}
+##################################################################################
