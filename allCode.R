@@ -72,7 +72,7 @@ assignColors(s_sheet = s_sheet, colorByCol = 'SampleName')
 ###################################################################################
 # hierarchical clustering plot
 use_r('hierarchicalClustPlot')
-hierarchicalClustPlot(countsDat=trnCounts, s_sheet = s_sheet, colorByCol = 'SampleGroup', title = 'XXX' )
+hierarchicalClustPlot(countsDat=trnCounts, s_sheet = s_sheet, colorByCol = 'SampleGroup', title = 'RNAse exp' )
 ###################################################################################
 
 
@@ -91,7 +91,20 @@ readsPerSample <- getReadCountsFromSalmonLogs(s_sheet = s_sheet, quantOut = quan
 
 ###################################################################################
 # reads per sample barplot
+readCounts <- readsPerSample
 use_r('readsPerSampleBarPlot')
 
 readsPerSampleBarPlot(readCounts = readsPerSample)
+###################################################################################
+
+###################################################################################
+# reads / sample group boxplot
+use_r('readsPerGroupBoxplot')
+readsPerGroupBoxplot(s_sheet = s_sheet, readCounts = readsPerSample)
+
+###################################################################################
+
+
+###################################################################################
+#
 ###################################################################################

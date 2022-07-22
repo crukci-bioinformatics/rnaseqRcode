@@ -17,7 +17,7 @@ is_validMetaData <- function( s_sheet, columnsToCheck ){
   if(is.data.frame(s_sheet)){
 
     # given columns present in metadata columns?
-    if(sum(colnames(s_sheet) %in% columnsToCheck) > 0 ){
+    if(is.element(columnsToCheck, names(s_sheet)) ){
       okay <- TRUE
     }else{
       message('Given columns not found in metadata columns!')

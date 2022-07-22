@@ -25,7 +25,7 @@ readsPerSampleBarPlot <- function(readCounts){
   p <- ggplot(data=readCounts, mapping=aes(x=SampleName, y=fragments)) +
     geom_bar(stat = 'identity', fill='black') +
     labs(
-      title = 'reads / sample',
+      title = 'reads/sample',
       x='',
       y='Fragments (million)'
     ) +
