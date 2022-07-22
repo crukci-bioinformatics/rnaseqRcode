@@ -106,5 +106,7 @@ readsPerGroupBoxplot(s_sheet = s_sheet, readCounts = readsPerSample)
 
 
 ###################################################################################
-#
+# corrillationPlot
+use_r("correlationPlot")
+correlationPlot(countsMat = trnCounts)
 ###################################################################################
