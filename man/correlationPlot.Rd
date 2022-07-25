@@ -4,10 +4,12 @@
 \alias{correlationPlot}
 \title{Correlation plot from counts matrix}
 \usage{
-correlationPlot(countsMat)
+correlationPlot(countsMat, s_sheet)
 }
 \arguments{
 \item{countsMat}{a counts matrix}
+
+\item{s_sheet}{a data frame; sample meta data sheet}
 }
 \value{
 

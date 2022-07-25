@@ -108,5 +108,12 @@ readsPerGroupBoxplot(s_sheet = s_sheet, readCounts = readsPerSample)
 ###################################################################################
 # corrillationPlot
 use_r("correlationPlot")
-correlationPlot(countsMat = trnCounts)
+correlationPlot(countsMat = trnCounts, s_sheet = s_sheet)
+###################################################################################
+
+
+###################################################################################
+# Fraction of ribosomal genes
+use_r('riboFractionPlot')
+riboFractionPlot(countsData = rawCounts, gtfFile = 'data/references/mmu.GRCm38.gtf' )
 ###################################################################################
