@@ -27,10 +27,15 @@ getPcaPlot <- function(countsDat, s_sheet, pcaColFactor="SampleGroup", pcaShapeF
 
   p <- autoplot(pcaData,
                 data=s_sheet,
-                colour=pcaColFactor,
-                shape=pcaShapeFac
+                fill=pcaColFactor,
+                shape = 21,
+                size=5,
+                alpha=0.6
                 ) +
-    theme_classic()
+    theme_classic() +
+    theme(
+      legend.position = 'top'
+    )
 
   return(p)
 

@@ -52,57 +52,31 @@ hierarchicalClustPlot <- function(countsDat, s_sheet, colorByCol='SampleGroup',
     as.dendrogram() %>%
     dendro_data()
 
-  colorByCol <- sym(colorByCol)
-
   labelDat <- dendroData$labels %>%
     mutate(SampleName = as.character(label)) %>%
-    left_join(s_sheet, "SampleName") %>%
-    mutate(across(!!colorByCol, as.factor))
+    left_join(s_sheet, "SampleName")
 
-  axisBreaks <- pretty(dendroData$segments$yend)[-1] %>% head(-1)
-
-  if (horizontal) {
-    hj <- 0
-    ny <- 1
-    ang <- 0
-  }
-  if (!horizontal) {
-    hj <- 1
-    ny <- -1
-    ang <- 90
-  }
-
+  axisBreaks <- pretty(dendroData$segments$yend)
   hcPlot <- ggplot(dendroData$segment) +
     geom_segment(aes(x = x, y = y, xend = xend, yend = yend)) +
-    geom_text(
-      data = labelDat,
-      aes(x = x, y = y, label = SampleName, colour = !!colorByCol),
-      hjust = hj, nudge_y = ny, angle = ang, fontface='bold'
-    ) +
-    guides(colour = "none") +
-    scale_colour_manual(values = sampleColors) +
-    labs(x = NULL, y = "Distance", title = title)
-  if (horizontal) {
-    hcPlot <- hcPlot +
-      scale_y_reverse(expand = c(0.2, 0), breaks = axisBreaks) +
-      coord_flip() +
-      theme(
-        axis.title.y = element_blank(),
-        axis.text.y = element_blank(),
-        axis.ticks.y = element_blank(),
-        plot.title = element_text(hjust = 0.5),
-        panel.background = element_blank()
-      )
-  } else {
-    hcPlot <- hcPlot +
-      scale_y_continuous(expand = c(0.2, 0), breaks = axisBreaks) +
-      theme(
-        axis.title.x = element_blank(),
-        axis.text.x = element_blank(),
-        axis.ticks.x = element_blank(),
-        plot.title = element_text(hjust = 0.5),
-        panel.background = element_blank()
-      )
-  }
+    geom_label(data = labelDat,
+               aes_string(x = "x",
+                   y = "y",
+                   label = "SampleName",
+                   fill = colorByCol),
+               hjust = 0,
+               nudge_y = 1,
+               fontface = "bold") +
+    labs(x = NULL, y = "Distance", title = NULL) +
+    scale_y_reverse(expand = c(0.2, 0), breaks = axisBreaks) +
+    coord_flip() +
+    theme(axis.title.y = element_blank(),
+          axis.text.y = element_blank(),
+          axis.ticks.y = element_blank(),
+          plot.title = element_text(hjust = 0.5),
+          panel.background = element_blank(),
+          axis.text.x = element_text(face='bold', color='blue'),
+          legend.position = 'top')
+
   return(hcPlot)
 }
