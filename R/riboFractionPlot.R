@@ -1,6 +1,6 @@
 argCheck_riboFractionPlot <- function(countsData, gtf){
   assert_that(is.matrix(countsData))
-  assert_that(class(gtf) == 'GRanges' )
+  assert_that(is(gtf, 'GRanges') )
 }
 
 #' Get Ribosomal and Nonribosomal counts barplot.

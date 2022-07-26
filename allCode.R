@@ -51,7 +51,6 @@ load_all()
 trnCounts <- transformCounts(rawCounts = rawCounts, countsCutOff = 10, FUN = vst)
 ###################################################################################
 
-
 ###################################################################################
 # PCA plos
 use_r('getPcaPlot')
@@ -128,7 +127,18 @@ countsDensityPlot(s_sheet = s_sheet, countsData = rawCounts)
 
 ###################################################################################
 # DESeq2
-
 use_r("createDdsAndDESeq")
+design <- checkAndCreateCorrectDesignString(s_sheet = s_sheet, design = 'SampleGroup')
+dds <- createDdsAndDESeq(txi=txi, s_sheet = s_sheet, design = design )
+###################################################################################
 
+
+###################################################################################
+# plot dispersion Esimates
+plotDispEsts(dds)
+###################################################################################
+
+###################################################################################
+use_r('normFactorsBoxplot')
+normFactorsBoxplot(dds=dds)
 ###################################################################################

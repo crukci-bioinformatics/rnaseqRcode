@@ -4,12 +4,12 @@
 \alias{riboFractionPlot}
 \title{Get Ribosomal and Nonribosomal counts barplot.}
 \usage{
-riboFractionPlot(countsData, gtfFile)
+riboFractionPlot(countsData, gtf)
 }
 \arguments{
 \item{countsData}{a matrix; counts matrix preferably raw counts matrix.}
 
-\item{gtfFile}{a string; gft file name.}
+\item{gtf}{a GRanges object; gft}
 }
 \value{
 An object created by \code{ggplot}
