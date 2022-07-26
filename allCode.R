@@ -124,3 +124,11 @@ riboFractionPlot(countsData = rawCounts, gtfFile = 'data/references/mmu.GRCm38.g
 use_r('countsDensityPlot')
 countsDensityPlot(s_sheet = s_sheet, countsData = rawCounts)
 ###################################################################################
+
+
+###################################################################################
+# DESeq2
+
+use_r("deseq2Analysis")
+
+###################################################################################

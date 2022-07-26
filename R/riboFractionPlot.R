@@ -60,14 +60,17 @@ riboFractionPlot <- function(countsData, gtfFile){
     geom_bar( stat = 'identity') +
     labs(
       x='Sample Name',
-      y='% Counts'
+      y='% Counts',
+      title = 'Ribosomal and Nonribosomal read fraction'
     ) +
     scale_fill_manual(values = c('violet', 'tan') ) +
     theme(
       panel.background = element_blank(),
       axis.text.x = element_text(angle=90),
       axis.ticks.x = element_blank(),
-      axis.text  = element_text(color='blue', face='bold')
+      axis.text  = element_text(color='blue', face='bold'),
+      legend.position = 'bottom',
+      plot.title = element_text(size=15, face='bold', color='brown', hjust = 0.5)
     )
 
   return(p)
