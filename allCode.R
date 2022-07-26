@@ -129,6 +129,6 @@ countsDensityPlot(s_sheet = s_sheet, countsData = rawCounts)
 ###################################################################################
 # DESeq2
 
-use_r("deseq2Analysis")
+use_r("createDdsAndDESeq")
 
 ###################################################################################

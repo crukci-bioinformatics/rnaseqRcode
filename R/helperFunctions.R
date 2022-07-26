@@ -5,7 +5,7 @@
 #' @import assertthat
 #' @importFrom  magrittr %>%
 #' @importFrom grDevices col2rgb
-#' @importFrom stringr str_c
+#' @import stringr
 #' @importFrom purrr map_lgl
 #' @export
 
