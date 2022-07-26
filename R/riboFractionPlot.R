@@ -1,19 +1,18 @@
-argCheck_riboFractionPlot <- function(countsData, gtfFile){
+argCheck_riboFractionPlot <- function(countsData, gtf){
   assert_that(is.matrix(countsData))
-  assert_that(file.exists(gtfFile))
+  assert_that(class(gtf) == 'GRanges' )
 }
 
 #' Get Ribosomal and Nonribosomal counts barplot.
 #'
 #' @param countsData a matrix; counts matrix preferably raw counts matrix.
-#' @param gtfFile a string; gft file name.
+#' @param gtf a GRanges object; gft
 #'
 #' @return An object created by \code{ggplot}
 #' @export riboFractionPlot
 #'
 #' @examples
 #' @import ggplot2
-#' @importFrom rtracklayer import.gff
 #' @importFrom magrittr %>%
 #' @import dplyr
 #' @importFrom stringr str_detect
@@ -22,20 +21,14 @@ argCheck_riboFractionPlot <- function(countsData, gtfFile){
 #' @importFrom tibble rownames_to_column
 
 
-riboFractionPlot <- function(countsData, gtfFile){
+riboFractionPlot <- function(countsData, gtf){
 
-  argCheck_riboFractionPlot(countsData = countsData, gtfFile = gtfFile)
+  argCheck_riboFractionPlot(countsData = countsData, gtf = gtf)
 
-
-  gtf <- tryCatch(import.gff( gtfFile, format='gtf') %>%
-                    .[.$type == 'gene'] %>%
-                    .[!str_detect(.$gene_biotype, 'pseudogene' )] %>%
-                    .[str_detect(.$gene_name, regex('^RP[LS]', ignore_case = T) ) | .$gene_biotype == 'rRNA' ],
-                  error = function(cond){
-                    message(cond)
-                    stop('Provide correct GTF file')
-                    }
-  )
+  gtf <- gtf %>%
+    .[.$type == 'gene'] %>%
+    .[!str_detect(.$gene_biotype, 'pseudogene' )] %>%
+    .[str_detect(.$gene_name, regex('^RP[LS]', ignore_case = TRUE) ) | .$gene_biotype == 'rRNA' ]
 
   countsData <- countsData[ rowSums(countsData) > 0, ] %>%
     as.data.frame() %>%

@@ -7,6 +7,7 @@
 #' @importFrom grDevices col2rgb
 #' @import stringr
 #' @importFrom purrr map_lgl
+#' @importFrom rtracklayer import.gff
 #' @export
 
 
@@ -108,4 +109,16 @@ checkAndCreateCorrectDesignString <- function(s_sheet, design){
 }
 
 
+##################################################################################
+# load GTF file
+loadGTF <- function(gtfFile){
+  assert_that(file.exists(gtfFile))
+  gtf <- tryCatch(import.gff( gtfFile, format='gtf'),
+                  error = function(cond){
+                    message(cond)
+                    stop('Provide correct GTF file')
+                  }
+  )
+  return(gtf)
+}
 ##################################################################################
