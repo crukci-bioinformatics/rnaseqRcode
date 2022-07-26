@@ -2,6 +2,7 @@
 
 export(assignColors)
 export(correlationPlot)
+export(countsDensityPlot)
 export(getPcaPlot)
 export(getReadCountsFromSalmonLogs)
 export(hierarchicalClustPlot)

@@ -117,3 +117,10 @@ correlationPlot(countsMat = trnCounts, s_sheet = s_sheet)
 use_r('riboFractionPlot')
 riboFractionPlot(countsData = rawCounts, gtfFile = 'data/references/mmu.GRCm38.gtf' )
 ###################################################################################
+
+
+###################################################################################
+# counts density plot
+use_r('countsDensityPlot')
+countsDensityPlot(s_sheet = s_sheet, countsData = rawCounts)
+###################################################################################
