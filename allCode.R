@@ -4,7 +4,8 @@ library(devtools)
 library(tximport)
 library(tidyverse)
 library(DESeq2)
-s_sheet <- read_csv("data/samplesheet_corrected.csv")
+s_sheet <- read_csv("data/samplesheet_corrected.csv") %>%
+  arrange(SampleGroup,Replicate)
 quantOut <- "data/quantOut"
 tx2gene <- read_tsv("data/references/tx2gene.tsv")
 
@@ -113,8 +114,9 @@ correlationPlot(countsMat = trnCounts, s_sheet = s_sheet)
 
 ###################################################################################
 # Fraction of ribosomal genes
+gtf <- loadGTF(gtfFile = 'data/references/mmu.GRCm38.gtf')
 use_r('riboFractionPlot')
-riboFractionPlot(countsData = rawCounts, gtfFile = 'data/references/mmu.GRCm38.gtf' )
+riboFractionPlot(countsData = rawCounts, gtf = gtf )
 ###################################################################################
 
 
@@ -141,4 +143,9 @@ plotDispEsts(dds)
 ###################################################################################
 use_r('normFactorsBoxplot')
 normFactorsBoxplot(dds=dds)
+###################################################################################
+
+###################################################################################
+# save counts after adding gene symbols
+use_r('saveCounts')
 ###################################################################################

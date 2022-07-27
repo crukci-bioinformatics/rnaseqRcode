@@ -40,7 +40,7 @@ readsPerGroupBoxplot <- function(s_sheet, readCounts){
     theme_classic() +
 
     labs(
-      title = 'Sample group read distrrubution',
+      title = 'Sample group read distribution',
       y='Fragments (million)'
     ) +
 
