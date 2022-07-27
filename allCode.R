@@ -148,4 +148,22 @@ normFactorsBoxplot(dds=dds)
 ###################################################################################
 # save counts after adding gene symbols
 use_r('saveCounts')
+countsDir <- 'data/counts'
+saveCounts(dds = dds, txi = txi, countsDir = countsDir, gtf = gtf )
+###################################################################################
+
+
+###################################################################################
+# write DE results
+contrastFile = 'contrasts.csv'
+factorName <- 'SampleGroup'
+numerator <- 'Infected_d33'
+denominator <- 'Uninfected_d33'
+use_r("writeAndPlotDEResults")
+
+###################################################################################
+
+###################################################################################
+# MA plot
+use_r('getMAplot')
 ###################################################################################

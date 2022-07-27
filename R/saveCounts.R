@@ -21,8 +21,9 @@ checkArg_saveCounts <- function(dds, txi, countsDir, gtf){
 #' @importFrom dplyr filter select mutate left_join
 #' @importFrom tibble rownames_to_column
 #' @importFrom readr write_csv
-#' @importFrom stringr str_c
+#' @importFrom stringr str_c str_replace_all
 #' @importFrom rlang is_empty
+#' @importFrom tidyselect everything
 #'
 saveCounts <- function(dds, txi, countsDir, gtf ){
 
@@ -32,7 +33,8 @@ saveCounts <- function(dds, txi, countsDir, gtf ){
     as.data.frame() %>%
     filter(type=='gene') %>%
     dplyr::select(gene_id, gene_name, chr=seqnames, start, end, strand, gene_biotype) %>%
-    mutate(gene_name=toupper(gene_name))
+    mutate(gene_name=toupper(gene_name)) %>%
+    mutate(gene_biotype = str_replace_all(gene_biotype, '_', ' '))
 
   rawCounts <- txi$counts
   mode(rawCounts) <- 'integer'

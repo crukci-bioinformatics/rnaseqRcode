@@ -2,7 +2,7 @@
 % Please edit documentation in R/normFactorsBoxplot.R
 \name{normFactorsBoxplot}
 \alias{normFactorsBoxplot}
-\title{gives normalization factors distribution box plot}
+\title{gives normalization factors, raw and normalized counts distribution box plots}
 \usage{
 normFactorsBoxplot(dds)
 }
@@ -13,7 +13,7 @@ normFactorsBoxplot(dds)
 An object created by \code{ggplot}
 }
 \description{
-gives normalization factors distribution box plot
+gives normalization factors, raw and normalized counts distribution box plots
 }
 \examples{
 
