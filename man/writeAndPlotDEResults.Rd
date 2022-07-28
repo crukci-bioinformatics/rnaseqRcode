@@ -4,7 +4,15 @@
 \alias{writeAndPlotDEResults}
 \title{write DE results and create plots for each contrast}
 \usage{
-writeAndPlotDEResults(dds, factorName, numerator, denominator, DeOutDir, gtf)
+writeAndPlotDEResults(
+  dds,
+  factorName,
+  numerator,
+  denominator,
+  DeOutDir,
+  gtf,
+  pValCutoff = 0.05
+)
 }
 \arguments{
 \item{dds}{dds DESeqDataSet object; dds after applying \code{estimateSizeFactors}, \code{estimateDispersions} and \code{nbinomWaldTest}}
@@ -20,7 +28,7 @@ writeAndPlotDEResults(dds, factorName, numerator, denominator, DeOutDir, gtf)
 \item{gtf}{a GRanges object; typical output from \code{import.gff}}
 }
 \value{
-
+a data frame after \code{lfcShrink} applied
 }
 \description{
 write DE results and create plots for each contrast

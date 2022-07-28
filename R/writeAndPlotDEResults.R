@@ -1,4 +1,15 @@
+checkArg_writeAndPlotDEResults <- function(dds, factorName,
+                                           numerator, denominator,
+                                           DeOutDir, gtf, pValCutoff){
+  assert_that(is(dds, 'DESeqDataSet'))
+  assert_that(is.string(factorName))
+  assert_that(is.string(numerator))
+  assert_that(is.string(denominator))
+  assert_that(dir.exists(DeOutDir))
+  assert_that(is(gtf, 'GRanges'))
+  assert_that(is.numeric(pValCutoff))
 
+}
 
 #' write DE results and create plots for each contrast
 #'
@@ -9,7 +20,7 @@
 #' @param DeOutDir a string; directory name
 #' @param gtf a GRanges object; typical output from \code{import.gff}
 #'
-#' @return
+#' @return a data frame after \code{lfcShrink} applied
 #' @export writeAndPlotDEResults
 #'
 #' @examples
@@ -20,27 +31,31 @@
 #' @importFrom stringr str_c str_replace_all
 #' @importFrom rlang is_empty
 #' @importFrom tidyselect everything
-#' @importFrom DESeq2 results
+#' @importFrom DESeq2 results lfcShrink
 
-writeAndPlotDEResults <- function(dds, factorName, numerator, denominator, DeOutDir, gtf){
+writeAndPlotDEResults <- function(dds, factorName, numerator, denominator, DeOutDir, gtf, pValCutoff=0.05){
 
-  gtfTab <- gtf %>%
-    as.data.frame() %>%
-    filter(type=='gene') %>%
-    dplyr::select(gene_id, gene_name, chr=seqnames, start, end, strand, gene_biotype) %>%
-    mutate(gene_name=toupper(gene_name)) %>%
-    mutate(gene_biotype = str_replace_all(gene_biotype, '_', ' '))
+  checkArg_writeAndPlotDEResults(dds=dds, factorName=factorName,
+                                 numerator=numerator, denominator=denominator,
+                                 DeOutDir=DeOutDir, gtf=gtf,
+                                 pValCutoff=pValCutoff)
 
-  res <- results(dds, contrast=c(factorName, numerator, denominator), alpha=0.5) %>%
-    as.data.frame() %>%
-    rownames_to_column(var='gene_id') %>%
-    left_join(gtfTab, by='gene_id') %>%
-    dplyr::select(gene_id,gene_name, everything()) %>%
-    arrange(padj)
+
+
+  contr <- c(factorName, numerator, denominator)
+  res <- results(dds, contrast=contr, alpha=pValCutoff) %>%
+    as.data.frame()
+  res <- addGeneInfoFromGtfToResTab(res=res, gtf=gtf)
+
+  shrinkRes <- lfcShrink(dds=dds, contrast=contr, type='ashr') %>%
+    as.data.frame()
+  shrinkRes <- addGeneInfoFromGtfToResTab(res=shrinkRes, gtf=gtf)
+
 
   deOutFile <- str_c(factorName,numerator, 'vs', denominator, sep='_') %>%
     str_c(.,'csv', sep='.') %>%
     str_c(DeOutDir, ., sep='/')
 
   write_csv(x=res, file=deOutFile)
+  return(shrinkRes)
 }

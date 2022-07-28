@@ -161,9 +161,19 @@ numerator <- 'Infected_d33'
 denominator <- 'Uninfected_d33'
 use_r("writeAndPlotDEResults")
 
+res <- writeAndPlotDEResults(dds = dds,
+                      factorName = factorName,
+                      numerator=numerator,
+                      denominator=denominator,
+                      gtf = gtf,
+                      DeOutDir = DeOutDir,
+                      pValCutoff = 0.05
+                      )
 ###################################################################################
 
 ###################################################################################
 # MA plot
 use_r('getMAplot')
+
+getMAplot(res = res, numerator = numerator, denominator=denominator, topN=20, genesToShow = c('ESR1'))
 ###################################################################################
