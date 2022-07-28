@@ -175,5 +175,14 @@ res <- writeAndPlotDEResults(dds = dds,
 # MA plot
 use_r('getMAplot')
 
-getMAplot(res = res, numerator = numerator, denominator=denominator, topN=20, genesToShow = c('ESR1'))
+getMAplot(res = res, numerator = numerator,
+          denominator=denominator,
+          topN=20, genesToShow = c('ESR1'))
 ###################################################################################
+
+
+###################################################################################
+# pvalue distribution plot
+use_r("getPvalDistriPlot")
+###################################################################################
+
