@@ -1,15 +1,52 @@
+# check arguments
+checkArg_getPvalDistriPlot <- function(res, numerator, denominator, pValCutoff){
+
+  assert_that(is.data.frame(res))
+  assert_that(is.string(numerator))
+  assert_that(is.string(denominator))
+  assert_that(is.numeric(pValCutoff))
+}
+#' Gives p value distribution plot
+#'
+#' @param res a data frame; DESeq2 results converted to data frame
+#' @param numerator a string; numerator in a contrast
+#' @param denominator a string; denominator in a contrast
+#' @param pValCutoff numeric value; padj cut off value
+#'
+#' @return An object created by \code{ggplot}
+#' @export getPvalDistriPlot
+#'
+#' @examples
+#'
+#' @import import ggplot2
+#' @importFrom dplyr  mutate if_else arrange
+#' @importFrom stringr str_c
+#' @importFrom magrittr %>%
+
+
 getPvalDistriPlot <- function(res, numerator, denominator, pValCutoff){
 
+  checkArg_getPvalDistriPlot( res=res, numerator=numerator,
+                              denominator=denominator,
+                              pValCutoff=pValCutoff )
+
+  pTitle <- str_c( numerator, 'vs', denominator, sep=' ')
   res <- res %>%
     mutate(Truth = if_else( pvalue < pValCutoff, 'Alternate', 'Null')) %>%
     arrange(padj)
 
-  ggplot(res, aes(x=pvalue, color=Truth)) +
+  p <- ggplot(res, aes(x=pvalue, color=Truth)) +
     geom_histogram(bins=20, fill='white', size=1, na.rm =TRUE ) +
     scale_color_manual(values = c('black', 'orange')) +
+    labs(x='p vlues',
+         y='Frequency',
+         title = pTitle
+    ) +
     theme(
-      panel.background = element_blank()
+      panel.background = element_blank(),
+      axis.text = element_text(color='blue'),
+      plot.title = element_text(color='brown', size=15, hjust=0.5, face='bold'),
+      legend.position = 'bottom'
     )
-
-
+  return(p)
 }

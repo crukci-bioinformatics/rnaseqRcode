@@ -184,5 +184,16 @@ getMAplot(res = res, numerator = numerator,
 ###################################################################################
 # pvalue distribution plot
 use_r("getPvalDistriPlot")
+
+getPvalDistriPlot(res = res,
+                  numerator = numerator,
+                  denominator=denominator,
+                  pValCutoff = pValCutoff)
+
 ###################################################################################
 
+
+###################################################################################
+# volcano plot
+use_r("getVolcanoPlot")
+###################################################################################
