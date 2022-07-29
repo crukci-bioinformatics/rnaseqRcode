@@ -2,7 +2,7 @@
 % Please edit documentation in R/getVolcanoPlot.R
 \name{getVolcanoPlot}
 \alias{getVolcanoPlot}
-\title{Title}
+\title{gives volcano plot}
 \usage{
 getVolcanoPlot(
   res,
@@ -30,5 +30,5 @@ getVolcanoPlot(
 An object created by \code{ggplot}
 }
 \description{
-Title
+gives volcano plot
 }

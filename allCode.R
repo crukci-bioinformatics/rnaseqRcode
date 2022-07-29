@@ -201,3 +201,11 @@ getVolcanoPlot(res=res, numerator = numerator,
                topN = 100, genesToShow = 'ESR1',
                pValCutoff = 0.05)
 ###################################################################################
+
+
+###################################################################################
+# hearmap
+use_r('getHeatmap')
+
+getHeatmap(dds=dds, topN=500, annoGroup = c('SampleGroup', 'SampleGroup'))
+###################################################################################
