@@ -18,7 +18,7 @@ checkArg_getPvalDistriPlot <- function(res, numerator, denominator, pValCutoff){
 #'
 #' @examples
 #'
-#' @import import ggplot2
+#' @import ggplot2
 #' @importFrom dplyr  mutate if_else arrange
 #' @importFrom stringr str_c
 #' @importFrom magrittr %>%

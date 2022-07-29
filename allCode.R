@@ -196,4 +196,8 @@ getPvalDistriPlot(res = res,
 ###################################################################################
 # volcano plot
 use_r("getVolcanoPlot")
+getVolcanoPlot(res=res, numerator = numerator,
+               denominator = denominator,
+               topN = 100, genesToShow = 'ESR1',
+               pValCutoff = 0.05)
 ###################################################################################

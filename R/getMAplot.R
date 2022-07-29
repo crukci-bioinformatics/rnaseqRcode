@@ -4,7 +4,7 @@ checkArg_getMAplot <- function(res, numerator, denominator,
   assert_that(is.data.frame(res))
   assert_that(is.string(numerator))
   assert_that(is.string(denominator))
-  assert_that(is.vector(genesToShow) | is.null(genesToShow))
+  assert_that(is.character(genesToShow) | is.null(genesToShow))
   assert_that(is.numeric(topN))
   assert_that(is.numeric(pValCutoff))
 
