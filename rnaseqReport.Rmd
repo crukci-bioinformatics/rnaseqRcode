@@ -1,0 +1,120 @@
+---
+title: "`projectName`"
+author: "Chandra Chilamakuri"
+date: "`r format(Sys.time(), '%a %d %b %Y')`"
+output:
+  
+  
+  html_document:
+
+    theme: cerulean
+    highlight: espresso
+    toc: yes
+    toc_float: yes
+    smooth_scroll: yes
+    code_folding: hide
+---
+
+```{r setup, include=FALSE}
+# load libraries
+suppressPackageStartupMessages(library(rnaseqRcode) )# Analysis R package
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(DT))
+suppressPackageStartupMessages(library(RColorBrewer))
+suppressPackageStartupMessages(library(DESeq2))
+# knitr global options
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning = FALSE, cache = FALSE)
+```
+### Define veriables
+```{r def_vars}
+# define variables
+projectName <- 'Test project'
+quantOut <- 'data/quantOut'
+tx2geneFile <- 'data/references/tx2gene.tsv'
+
+#################### LOAD DATA ######################################
+# load sample metadata
+s_sheet <- read_csv('data/samplesheet_corrected.csv', progress=FALSE, 
+                   show_col_types = FALSE)
+
+
+# load tx2gene data
+tx2gene <- read_tsv(tx2geneFile, show_col_types = FALSE)
+```
+
+## Sample information {.tabset}
+
+### Sample metadata 
+
+```{r sample_metadata}
+groupNames <-  unique(s_sheet$SampleGroup)
+noGroups <- length(groupNames)
+colPals = brewer.pal.info[brewer.pal.info$colorblind, ] %>% 
+  .[c('Dark2', 'Paired'),]
+
+colVector = unlist(mapply(brewer.pal, colPals$maxcolors,
+                           rownames(colPals)))
+
+if (noGroups < length(colVector) ){
+  groupColors <- sample(colVector, noGroups, replace = FALSE)
+}else{
+  groupColors <- sample(colVector, noGroups, replace = TRUE)
+}
+
+s_sheet %>% 
+  arrange('SampleGroup') %>% 
+  datatable(style='bootstrap') %>% 
+  formatStyle(
+    columns = 'SampleGroup',
+    target = 'row',
+    color= styleEqual(groupNames, groupColors)
+  )
+```
+
+
+### Sample groups and replicates
+
+```{r sampleGroupTab}
+s_sheet %>% 
+  select(SampleGroup) %>% 
+  group_by(SampleGroup) %>% 
+  summarise(Replicates=n()) %>% 
+  datatable()
+```
+
+```{r load_data}
+txi <- importSampleTxiAndSaveRds(s_sheet = s_sheet, quantOut = quantOut, 
+                          quantTool = 'salmon', tx2gene = tx2gene )
+rawCounts <- txi$counts
+mode(rawCounts) <- 'integer'
+trnCounts <- transformCounts(rawCounts = rawCounts, countsCutOff = 10, FUN = vst)
+```
+
+
+## QC {.tabset}   
+
+### reads / sample table
+
+```{r reads_per_sample_tab}
+readsPerSample <- getReadCountsFromSalmonLogs(s_sheet = s_sheet, quantOut = quantOut)
+
+readsPerSample %>% 
+  mutate(fragments = fragments /1000000) %>% 
+  mutate(fragments = round(fragments, digits = 2)) %>% 
+  datatable() 
+
+```
+
+### reads / sample barplot
+
+```{r reads_per_sample_bp}
+readsPerSampleBarPlot(readCounts = readsPerSample)
+```
+
+### reads / sample boxplot
+
+```{r reads_per_group_boxplot}
+readsPerGroupBoxplot(s_sheet = s_sheet, readCounts = readsPerSample)
+```
+
+
