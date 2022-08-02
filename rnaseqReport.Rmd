@@ -17,11 +17,12 @@ output:
 
 ```{r setup, include=FALSE}
 # load libraries
-suppressPackageStartupMessages(library(rnaseqRcode) )# Analysis R package
+#suppressPackageStartupMessages(library(rnaseqRcode) )# Analysis R package
 suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(DT))
 suppressPackageStartupMessages(library(RColorBrewer))
 suppressPackageStartupMessages(library(DESeq2))
+suppressPackageStartupMessages(library(assertthat))
 # knitr global options
 knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning = FALSE, cache = FALSE)
 ```
@@ -90,7 +91,6 @@ txi <- importSampleTxiAndSaveRds(s_sheet = s_sheet, quantOut = quantOut,
                           quantTool = 'salmon', tx2gene = tx2gene )
 rawCounts <- txi$counts
 mode(rawCounts) <- 'integer'
-trnCounts <- transformCounts(rawCounts = rawCounts, countsCutOff = 10, FUN = vst)
 ```
 
 # QC 
@@ -102,7 +102,7 @@ trnCounts <- transformCounts(rawCounts = rawCounts, countsCutOff = 10, FUN = vst
 ```{r reads_per_sample_tab}
 readsPerSample <- getReadCountsFromSalmonLogs(s_sheet = s_sheet, 
                                               quantOut = quantOut) %>%
-  mutate(fragments = fragments /1000000) %>% 
+  mutate(fragments = fragments / 1000000) %>% 
   mutate(fragments = round(fragments, digits = 2))
   
 

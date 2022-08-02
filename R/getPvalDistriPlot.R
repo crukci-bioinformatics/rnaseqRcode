@@ -22,6 +22,7 @@ checkArg_getPvalDistriPlot <- function(res, numerator, denominator, pValCutoff){
 #' @importFrom dplyr  mutate if_else arrange
 #' @importFrom stringr str_c
 #' @importFrom magrittr %>%
+#' @importFrom assertthat is.string
 
 
 getPvalDistriPlot <- function(res, numerator, denominator, pValCutoff){

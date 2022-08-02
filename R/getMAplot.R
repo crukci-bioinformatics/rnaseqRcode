@@ -27,6 +27,7 @@ checkArg_getMAplot <- function(res, numerator, denominator,
 #' @importFrom dplyr filter mutate if_else
 #' @importFrom stringr str_c
 #' @importFrom magrittr %>%
+#' @importFrom assertthat is.string
 
 getMAplot <- function(res, numerator, denominator,
                       genesToShow=NULL, topN = 50, pValCutoff=0.05){

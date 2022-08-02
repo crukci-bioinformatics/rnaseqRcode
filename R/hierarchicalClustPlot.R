@@ -31,6 +31,7 @@ checkArg_hierarchicalClustPlot <- function(countsDat, s_sheet, colorByCol='Sampl
 #' @importfrom rlang sym
 #' @importFrom stats as.dendrogram dist hclust
 #' @importFrom utils head
+#' @importFrom assertthat is.string is.flag
 #'
 hierarchicalClustPlot <- function(countsDat, s_sheet, colorByCol='SampleGroup',
                                   horizontal=TRUE, sampleColors=NULL, title=""){

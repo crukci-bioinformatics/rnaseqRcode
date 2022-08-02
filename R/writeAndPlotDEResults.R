@@ -32,6 +32,7 @@ checkArg_writeAndPlotDEResults <- function(dds, factorName,
 #' @importFrom rlang is_empty
 #' @importFrom tidyselect everything
 #' @importFrom DESeq2 results lfcShrink
+#' @importFrom assertthat is.string
 
 writeAndPlotDEResults <- function(dds, factorName, numerator, denominator, DeOutDir, gtf, pValCutoff=0.05){
 
