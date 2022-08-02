@@ -27,9 +27,6 @@ readsPerGroupBoxplot <- function(s_sheet, readCounts){
 
   checkArg_readsPerGroupBoxplot(s_sheet=s_sheet, readCounts=readCounts)
 
-  readCounts <- readCounts %>%
-    mutate( fragments = fragments / 1000000)
-
   readCounts <- inner_join(readCounts, s_sheet, by='SampleName')
 
   len <- length(unique(readCounts$SampleGroup))

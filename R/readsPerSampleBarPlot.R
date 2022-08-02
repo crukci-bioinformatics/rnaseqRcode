@@ -19,8 +19,6 @@ checkArg_readsPerSampleBarPlot <- function(readCounts){
 readsPerSampleBarPlot <- function(readCounts){
 
   checkArg_readsPerSampleBarPlot(readCounts)
-  readCounts <- readCounts %>%
-    mutate( fragments = fragments / 1000000)
 
   p <- ggplot(data=readCounts, mapping=aes(x=SampleName, y=fragments)) +
     geom_bar(stat = 'identity', fill='black') +
