@@ -18,6 +18,7 @@ output:
 ```{r setup, include=FALSE}
 # load libraries
 #suppressPackageStartupMessages(library(rnaseqRcode) )# Analysis R package
+devtools::load_all()
 suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(DT))
 suppressPackageStartupMessages(library(RColorBrewer))
@@ -26,24 +27,52 @@ suppressPackageStartupMessages(library(assertthat))
 # knitr global options
 knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning = FALSE, cache = FALSE)
 ```
+
+
+```{r def_functions}
+catHeader <- function(text = "", level = 3, is_tabset=FALSE) {
+  
+  if(is_tabset){
+    cat(paste0("\n\n", 
+               paste(rep("#", level), collapse = ""), 
+               " ", text,' {.tabset}', "\n"))
+    
+  }else{
+    cat(paste0("\n\n", 
+               paste(rep("#", level), collapse = ""), 
+               " ", text, "\n"))
+  }
+}
+
+```
 ### Define veriables
 ```{r def_vars}
 # define variables
 projectName <- 'Test project'
 quantOut <- 'data/quantOut'
 tx2geneFile <- 'data/references/tx2gene.tsv'
-
+gtfFile <- 'data/references/mmu.GRCm38.gtf'
+contrastFile <- 'data/contrasts.csv'
+design <- '~SampleGroup'
+countsDir <- 'data/counts'
+factorName <- 'SampleGroup'
+DeOutDir <- 'data/DEAnalysis'
+pValCutoff <- 0.05
+genesToShow <- 'ESR1'
 #################### LOAD DATA ######################################
 # load sample metadata
 s_sheet <- read_csv('data/samplesheet_corrected.csv', progress=FALSE, 
                    show_col_types = FALSE)
 
-
 # load tx2gene data
 tx2gene <- read_tsv(tx2geneFile, show_col_types = FALSE)
 
 # GTF
-gtf <- loadGTF(gtfFile = 'data/references/mmu.GRCm38.gtf')
+#gtf <- loadGTF(gtfFile = gtfFile)
+#saveRDS(object = gtf, file = 'data/gtf.rds')
+gtf <- readRDS('data/gtf.rds')
+# contrast table
+contTab <- read_csv(contrastFile)
 ```
 
 ## Sample information {.tabset}
@@ -130,6 +159,11 @@ readsPerGroupBoxplot(s_sheet = s_sheet, readCounts = readsPerSample)
 countsDensityPlot(s_sheet = s_sheet, countsData = rawCounts)
 ```
 
+### Ribosomal read fraction
+
+```{r robo_fraction_plot}
+riboFractionPlot(countsData = rawCounts, gtf = gtf)
+```
 
 ## QC: Unsupervised clustering {.tabset}
 
@@ -153,3 +187,121 @@ hierarchicalClustPlot(countsDat=trnCounts,
 ```{r correlogram_plot}
 correlationPlot(countsMat = trnCounts, s_sheet = s_sheet)
 ```
+
+
+# DE analysis
+
+```{r DE_analysis}
+design <- checkAndCreateCorrectDesignString(s_sheet = s_sheet, 
+                                            design = design)
+
+dds <- createDdsAndDESeq(txi=txi, s_sheet = s_sheet, design = design )
+
+saveCounts(dds = dds, txi = txi, countsDir = countsDir, gtf = gtf )
+```
+
+## DESeq2 QC plots {.tabset}
+
+### Normalisation plot 
+
+```{r norm_plots}
+normFactorsBoxplot(dds=dds)
+```
+
+### Dispersion estimates plot
+
+```{r dispersion_plot}
+plotDispEsts(dds)
+```
+
+### heat-map with top variable genes 
+
+```{r heatmap_plot}
+getHeatmap(dds=dds, topN=500, annoGroup = c('SampleGroup'))
+```
+
+
+## Differential testing {.tabset}
+
+```{r de_testing, results = "asis"}
+contNames <- c()
+sigUpReg <- c()
+sigDownReg <- c()
+
+for( i in 1:nrow(contTab)){
+  
+  numerator <- contTab$numerator[i]
+  denominator <- contTab$denominator[i]
+  contName <- str_c( numerator, 'vs', denominator, sep = ' ')
+  
+  catHeader(text = contName, level = 3, is_tabset = TRUE)
+  
+  res <- writeAndPlotDEResults(dds = dds,
+                      factorName = factorName,
+                      numerator=numerator,
+                      denominator=denominator,
+                      gtf = gtf,
+                      DeOutDir = DeOutDir,
+                      pValCutoff = 0.05
+                      )
+  
+  contNames <- c(contNames, contName)
+  sigUpReg <- c(sigUpReg, 
+                sum(res$log2FoldChange > 0 & res$padj < pValCutoff, na.rm=TRUE))
+  sigDownReg <- c(sigDownReg,
+                  sum(res$log2FoldChange < 0 & res$padj < pValCutoff, na.rm=TRUE))
+  
+  catHeader(text = 'MA plot', level = 4)
+  p_ma <- getMAplot(res = res, numerator = numerator,
+          denominator=denominator,
+          topN=20, genesToShow = genesToShow)
+  
+  print(p_ma)
+  
+  cat('\n\n\n**This is MA plot, on X axis is averege gene expression, on Y-axis log 2 fold chages.**\n\n\n')
+  
+  
+  catHeader(text = 'volcano plot', level = 4)
+  
+  p_vol <- getVolcanoPlot(res=res, numerator = numerator,
+               denominator = denominator,
+               topN = 20, genesToShow = genesToShow,
+               pValCutoff = pValCutoff)
+  
+  print(p_vol)
+  
+  catHeader(text = 'p-value distribution plot', level = 4)
+  
+  p_pval <- getPvalDistriPlot(res = res,
+                  numerator = numerator,
+                  denominator=denominator,
+                  pValCutoff = pValCutoff)
+  
+  print(p_pval)
+  
+
+}
+
+deSumTab <- tibble(contrast=contNames, 
+                   sigUpReg=sigUpReg, 
+                   sigDownReg=sigDownReg,
+                   totalSigReg= (sigUpReg + sigDownReg)
+                   )
+```
+
+
+## DE summary table 
+
+```{r DE_sum_tab}
+
+deSumTab %>% 
+  datatable(style='bootstrap', caption = 'Significantly regulated genes for each contrast ') %>% 
+  formatStyle(
+    columns = 'contrast',
+    target = 'cell',
+    color= 'blue',
+    ontWeight='bold'
+  )
+
+```
+

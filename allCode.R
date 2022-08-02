@@ -207,7 +207,7 @@ getVolcanoPlot(res=res, numerator = numerator,
 # hearmap
 use_r('getHeatmap')
 
-getHeatmap(dds=dds, topN=500, annoGroup = c('SampleGroup', 'SampleGroup'))
+getHeatmap(dds=dds, topN=500, annoGroup = c('SampleGroup'))
 ###################################################################################
 
 ###################################################################################
