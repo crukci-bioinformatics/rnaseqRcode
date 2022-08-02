@@ -210,6 +210,32 @@ use_r('getHeatmap')
 getHeatmap(dds=dds, topN=500, annoGroup = c('SampleGroup', 'SampleGroup'))
 ###################################################################################
 
+###################################################################################
+###################################################################################
+# I am not sure why? But load_all() loads all functions including helper functions.
+# but with install() these functions are not accessible
+# therefore decided to create separate functions
+
+use_r('is_validMetaData')
+
+use_r('is_validTx2gene')
+
+use_r('is_validColor')
+
+use_r('is_validSampleColors')
+
+use_r("is_fileExists")
+
+use_r("checkAndCreateCorrectDesignString")
+
+use_r("loadGTF")
+
+use_r("addGeneInfoFromGtfToResTab")
+
+###################################################################################
+###################################################################################
+
+
 
 ###################################################################################
 # install package

@@ -40,6 +40,9 @@ s_sheet <- read_csv('data/samplesheet_corrected.csv', progress=FALSE,
 
 # load tx2gene data
 tx2gene <- read_tsv(tx2geneFile, show_col_types = FALSE)
+
+# GTF
+gtf <- loadGTF(gtfFile = 'data/references/mmu.GRCm38.gtf')
 ```
 
 ## Sample information {.tabset}
@@ -72,7 +75,7 @@ s_sheet %>%
 ```
 
 
-### Sample groups and replicates
+###  Replicates per sample group
 
 ```{r sampleGroupTab}
 s_sheet %>% 
@@ -90,31 +93,63 @@ mode(rawCounts) <- 'integer'
 trnCounts <- transformCounts(rawCounts = rawCounts, countsCutOff = 10, FUN = vst)
 ```
 
+# QC 
 
-## QC {.tabset}   
+##  QC: Sample read counts distribution {.tabset}   
 
 ### reads / sample table
 
 ```{r reads_per_sample_tab}
-readsPerSample <- getReadCountsFromSalmonLogs(s_sheet = s_sheet, quantOut = quantOut)
+readsPerSample <- getReadCountsFromSalmonLogs(s_sheet = s_sheet, 
+                                              quantOut = quantOut) %>%
+  mutate(fragments = fragments /1000000) %>% 
+  mutate(fragments = round(fragments, digits = 2))
+  
 
 readsPerSample %>% 
-  mutate(fragments = fragments /1000000) %>% 
-  mutate(fragments = round(fragments, digits = 2)) %>% 
-  datatable() 
+  datatable(caption = 'Reads per sample (million)') 
 
 ```
 
-### reads / sample barplot
+### barplot: reads / sample 
 
 ```{r reads_per_sample_bp}
 readsPerSampleBarPlot(readCounts = readsPerSample)
 ```
 
-### reads / sample boxplot
+### boxplot: reads / sample group
 
 ```{r reads_per_group_boxplot}
 readsPerGroupBoxplot(s_sheet = s_sheet, readCounts = readsPerSample)
 ```
 
 
+### density plot: reads / sample group
+
+```{r reads_per_sample_dens_plot}
+countsDensityPlot(s_sheet = s_sheet, countsData = rawCounts)
+```
+
+
+## QC: Unsupervised clustering {.tabset}
+
+### PCA 
+
+```{r PCA_plot}
+trnCounts <- transformCounts(rawCounts = rawCounts, countsCutOff = 10, FUN = vst)
+getPcaPlot(countsDat = trnCounts, s_sheet = s_sheet,pcaColFactor = 'SampleGroup')
+```
+
+### Hierarchical clustering 
+
+```{r hclust_plot}
+hierarchicalClustPlot(countsDat=trnCounts, 
+                      s_sheet = s_sheet, 
+                      colorByCol = 'SampleGroup' )
+```
+
+### correlogram 
+
+```{r correlogram_plot}
+correlationPlot(countsMat = trnCounts, s_sheet = s_sheet)
+```
