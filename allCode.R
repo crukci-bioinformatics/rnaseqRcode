@@ -243,6 +243,11 @@ use_r('plotGeneBiotypes')
 plotGeneBiotypes(dds=dds, gtf=gtf)
 ###################################################################################
 
+###################################################################################
+# add library complexity plot
+use_r('getLibraryComplexityPlot')
+getLibraryComplexityPlot(countsData = rawCounts, s_sheet = s_sheet)
+###################################################################################
 
 ###################################################################################
 # install package
