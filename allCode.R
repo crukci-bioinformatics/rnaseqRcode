@@ -249,6 +249,15 @@ use_r('getLibraryComplexityPlot')
 getLibraryComplexityPlot(countsData = rawCounts, s_sheet = s_sheet)
 ###################################################################################
 
+
+###################################################################################
+# Gene detection plot
+use_r('getGeneDetctionPlot')
+
+getGeneDetctionPlot(countsData = rawCounts, s_sheet = s_sheet)
+
+###################################################################################
+
 ###################################################################################
 # install package
 install()

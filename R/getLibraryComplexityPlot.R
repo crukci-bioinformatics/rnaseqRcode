@@ -19,6 +19,7 @@ checkArg_getLibraryComplexityPlot <- function(s_sheet, countsData){
 #' @importFrom purrr map_dfr
 #' @importFrom tibble tibble
 #' @importFrom dplyr left_join
+#' @importFrom magrittr %>%
 #'
 getLibraryComplexityPlot <- function(countsData, s_sheet){
   checkArg_getLibraryComplexityPlot(countsData=countsData, s_sheet=s_sheet )

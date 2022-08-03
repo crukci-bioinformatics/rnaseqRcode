@@ -4,7 +4,7 @@
 \alias{getLibraryComplexityPlot}
 \title{Gives library complexity plot}
 \usage{
-getLibraryComplexityPlot(countsData = countsData, s_sheet = s_sheet)
+getLibraryComplexityPlot(countsData, s_sheet)
 }
 \arguments{
 \item{countsData}{a matrix; raw counts matrix}
@@ -16,4 +16,7 @@ An object created by \code{ggplot}
 }
 \description{
 Gives library complexity plot
+}
+\examples{
+
 }
