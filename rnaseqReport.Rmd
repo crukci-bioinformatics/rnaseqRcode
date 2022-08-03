@@ -45,8 +45,10 @@ catHeader <- function(text = "", level = 3, is_tabset=FALSE) {
 }
 
 ```
+
 ### Define veriables
-```{r def_vars}
+
+```{r def_vars} 
 # define variables
 projectName <- 'Test project'
 quantOut <- 'data/quantOut'
@@ -59,6 +61,7 @@ factorName <- 'SampleGroup'
 DeOutDir <- 'data/DEAnalysis'
 pValCutoff <- 0.05
 genesToShow <- 'ESR1'
+
 #################### LOAD DATA ######################################
 # load sample metadata
 s_sheet <- read_csv('data/samplesheet_corrected.csv', progress=FALSE, 
@@ -72,7 +75,7 @@ tx2gene <- read_tsv(tx2geneFile, show_col_types = FALSE)
 #saveRDS(object = gtf, file = 'data/gtf.rds')
 gtf <- readRDS('data/gtf.rds')
 # contrast table
-contTab <- read_csv(contrastFile)
+contTab <- read_csv(contrastFile, show_col_types = FALSE)
 ```
 
 ## Sample information {.tabset}
@@ -120,11 +123,12 @@ txi <- importSampleTxiAndSaveRds(s_sheet = s_sheet, quantOut = quantOut,
                           quantTool = 'salmon', tx2gene = tx2gene )
 rawCounts <- txi$counts
 mode(rawCounts) <- 'integer'
+rawCounts <- rawCounts[rowSums(rawCounts) > 0, ]
 ```
 
 # QC 
 
-##  QC: Sample read counts distribution {.tabset}   
+##  QC on reads per sample {.tabset}   
 
 ### reads / sample table
 
@@ -152,6 +156,7 @@ readsPerSampleBarPlot(readCounts = readsPerSample)
 readsPerGroupBoxplot(s_sheet = s_sheet, readCounts = readsPerSample)
 ```
 
+## QC on raw count matrix  {.tabset}
 
 ### density plot: reads / sample group
 
@@ -165,6 +170,27 @@ countsDensityPlot(s_sheet = s_sheet, countsData = rawCounts)
 riboFractionPlot(countsData = rawCounts, gtf = gtf)
 ```
 
+### counts on gene biotype  
+
+```{r gene_biotype_plot}
+plotGeneBiotypes(countsData = rawCounts, gtf=gtf)
+```
+
+### Library complexity
+
+```{r library_complexity_plot}
+getLibraryComplexityPlot(countsData = rawCounts, s_sheet = s_sheet)
+```
+
+
+### Gene detection 
+
+```{r gene_detec_plot}
+getGeneDetctionPlot(countsData = rawCounts, s_sheet = s_sheet)
+```
+
+
+
 ## QC: Unsupervised clustering {.tabset}
 
 ### PCA 
@@ -173,6 +199,7 @@ riboFractionPlot(countsData = rawCounts, gtf = gtf)
 trnCounts <- transformCounts(rawCounts = rawCounts, countsCutOff = 10, FUN = vst)
 getPcaPlot(countsDat = trnCounts, s_sheet = s_sheet,pcaColFactor = 'SampleGroup')
 ```
+
 
 ### Hierarchical clustering 
 

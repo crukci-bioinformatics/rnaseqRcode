@@ -1,12 +1,12 @@
 # check arguments
-checkArg_plotGeneBiotypes <- function(dds, gtf){
-  assert_that(is(dds, 'DESeqDataSet'))
+checkArg_plotGeneBiotypes <- function(countsData, gtf){
+  assert_that(is.matrix(countsData))
   assert_that(is(gtf, 'GRanges'))
 }
 
 #' gives Gene biotypes read share
 #'
-#' @param dds DESeqDataSet object
+#' @param countsData counts matrix
 #' @param gtf GRanges object
 #'
 #' @return An object created by \code{ggplot}
@@ -22,9 +22,9 @@ checkArg_plotGeneBiotypes <- function(dds, gtf){
 #' @importFrom tidyr pivot_longer
 #'
 
-plotGeneBiotypes <- function(dds, gtf){
+plotGeneBiotypes <- function(countsData, gtf){
 
-  checkArg_plotGeneBiotypes(dds = dds, gtf=gtf)
+  checkArg_plotGeneBiotypes(countsData = countsData, gtf=gtf)
 
 
   otherType <- c('TEC', 'sense overlapping', 'antisense', 'sense intronic', 'processed transcript', 'misc RNA', 'ribozyme')
@@ -44,7 +44,7 @@ plotGeneBiotypes <- function(dds, gtf){
     mutate(gene_biotype = if_else(gene_biotype %in% mtRNA, 'Mt RNA', gene_biotype))
 
 
-  rawCounts <- txi$counts %>%
+  countsData <- countsData%>%
     as.data.frame() %>%
     mutate_if(is.numeric, as.integer) %>%
     rownames_to_column(var='gene_id') %>%
@@ -56,12 +56,12 @@ plotGeneBiotypes <- function(dds, gtf){
     summarise(counts= sum(counts))
 
 
-  totCountsTab <- rawCounts %>%
+  totCountsTab <- countsData %>%
     ungroup() %>%
     group_by(SampleName) %>%
     summarise(totalCounts = sum(counts) )
 
-  combTab <- left_join(rawCounts, totCountsTab, by='SampleName') %>%
+  combTab <- left_join(countsData, totCountsTab, by='SampleName') %>%
     mutate(countsPecent = round((counts/totalCounts) * 100, digits = 2))
 
   p <- ggplot(combTab, aes(x=SampleName, y=countsPecent, group=gene_biotype, color=gene_biotype)) +
