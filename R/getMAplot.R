@@ -14,7 +14,7 @@ checkArg_getMAplot <- function(res, numerator, denominator,
 #' @param res a data frame; DESeq2 results converted to data frame
 #' @param numerator  a string; numerator in a contrast
 #' @param denominator a string; denominator in a contrast
-#' @param genesToShow a vector; list genes to show
+#' @param genesToShow a string; list genes to show
 #' @param topN integer; number of top gene names to show on plot; default top 50
 #' @param pValCutoff numeric value; padj cut off value to classify as significant
 #'
@@ -33,8 +33,15 @@ getMAplot <- function(res, numerator, denominator,
                       genesToShow=NULL, topN = 50, pValCutoff=0.05){
 
   checkArg_getMAplot(res=res, numerator=numerator,
-                              denominator=denominator, genesToShow=genesToShow,
-                              topN=topN, pValCutoff=pValCutoff)
+                     denominator=denominator, genesToShow=genesToShow,
+                     topN=topN, pValCutoff=pValCutoff)
+
+  if(!is.null(genesToShow)){
+    genesToShow <- genesToShow %>%
+      str_split(.,',', simplify = T) %>%
+      as.vector() %>%
+      map_chr(str_remove_all, ' ')
+  }
 
 
   res <- res %>%

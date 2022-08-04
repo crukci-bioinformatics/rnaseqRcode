@@ -20,7 +20,7 @@ getMAplot(
 
 \item{denominator}{a string; denominator in a contrast}
 
-\item{genesToShow}{a vector; list genes to show}
+\item{genesToShow}{a string; list genes to show}
 
 \item{topN}{integer; number of top gene names to show on plot; default top 50}
 

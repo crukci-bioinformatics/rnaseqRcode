@@ -39,6 +39,14 @@ getVolcanoPlot <- function( res, numerator,
                           denominator = denominator, topN=topN,
                           genesToShow=genesToShow, pValCutoff=pValCutoff)
 
+  if(!is.null(genesToShow)){
+    genesToShow <- genesToShow %>%
+      str_split(.,',', simplify = T) %>%
+      as.vector() %>%
+      map_chr(str_remove_all, ' ')
+  }
+
+
 
   res <- res %>%
     mutate(is_significant = if_else( padj < pValCutoff, 'Significant', 'Not significant', missing = 'NA')) %>%

@@ -4,10 +4,10 @@
 \alias{plotGeneBiotypes}
 \title{gives Gene biotypes read share}
 \usage{
-plotGeneBiotypes(dds, gtf)
+plotGeneBiotypes(countsData, gtf)
 }
 \arguments{
-\item{dds}{DESeqDataSet object}
+\item{countsData}{counts matrix}
 
 \item{gtf}{GRanges object}
 }

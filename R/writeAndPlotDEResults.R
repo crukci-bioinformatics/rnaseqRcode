@@ -19,6 +19,7 @@ checkArg_writeAndPlotDEResults <- function(dds, factorName,
 #' @param denominator a string; denominator (reference) in a contrast
 #' @param DeOutDir a string; directory name
 #' @param gtf a GRanges object; typical output from \code{import.gff}
+#' @param pValCutoff a numeric value
 #'
 #' @return a data frame after \code{lfcShrink} applied
 #' @export writeAndPlotDEResults

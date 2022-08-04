@@ -260,8 +260,14 @@ getGeneDetctionPlot(countsData = rawCounts, s_sheet = s_sheet)
 
 
 ###################################################################################
-# Counts distribution plots on random genes?
-
+# Counts distribution plots on random genes
+use_r("getGeneCountsPlot")
+getGeneCountsPlot(dds=dds,
+                  numerator = numerator, denominator = denominator,
+                  factorName = factorName,
+                  gtf=gtf,
+                  pValCutoff=pValCutoff,
+                  topN=10, genesToShow=genesToShow)
 ###################################################################################
 
 
