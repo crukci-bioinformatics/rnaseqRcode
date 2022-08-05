@@ -51,6 +51,7 @@ catHeader <- function(text = "", level = 3, is_tabset=FALSE) {
 ```{r def_vars} 
 # define variables
 projectName <- 'Test project'
+genome <- 'Mus_musculus'
 quantOut <- 'data/quantOut'
 tx2geneFile <- 'data/references/tx2gene.tsv'
 gtfFile <- 'data/references/mmu.GRCm38.gtf'

@@ -278,6 +278,19 @@ getPcaLoadingsPlot(countsData=trnCounts, s_sheet = s_sheet,
                    genesToShow = NULL, gtf = gtf, topN = 10)
 
 ###################################################################################
+###################################################################################
+# # karyogram plot
+use_r("getKaryogramPlot")
+getKaryogramPlot(dds=dds,
+                 numerator = numerator,
+                 denominator = denominator,
+                 factorName = factorName,gtf = gtf,
+                 pValCutoff = pValCutoff,
+                 genome = genome
+
+                  )
+###################################################################################
+
 
 ###################################################################################
 # install package
