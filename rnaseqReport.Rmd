@@ -107,6 +107,7 @@ s_sheet %>%
     color= styleEqual(groupNames, groupColors)
   )
 ```
+The following table contains meta data that was provided to us.  
 
 
 ###  Replicates per sample group
@@ -118,6 +119,9 @@ s_sheet %>%
   summarise(Replicates=n()) %>% 
   datatable()
 ```
+
+The above table shows the number of replicates for each sample group.
+
 
 ```{r load_data}
 txi <- importSampleTxiAndSaveRds(s_sheet = s_sheet, quantOut = quantOut, 
@@ -131,7 +135,7 @@ rawCounts <- rawCounts[rowSums(rawCounts) > 0, ]
 
 ##  QC on reads per sample {.tabset}   
 
-### reads / sample table
+### Reads / sample table
 
 ```{r reads_per_sample_tab}
 readsPerSample <- getReadCountsFromSalmonLogs(s_sheet = s_sheet, 
@@ -145,17 +149,32 @@ readsPerSample %>%
 
 ```
 
-### barplot: reads / sample 
+The above table shows the number of reads or read pairs or fragments (millions) for each sample. For standard differential expression studies, we recommend at least **$\color{brown}{\text{20 million}}$** reads.
+
+<br><br><br><br>
+
+
+### barplot: Reads / sample 
 
 ```{r reads_per_sample_bp}
 readsPerSampleBarPlot(readCounts = readsPerSample)
 ```
 
-### boxplot: reads / sample group
+The barplot above shows the number of reads per sample. The X-axis shows the number of reads or read pairs or fragments in million, and the Y-axis shows the sample name. The yellow line shows the recommended number of reads i.e  **$\color{brown}{\text{20 million}}$** reads.
+
+<br><br><br><br>
+
+
+### boxplot: Reads / sample group
 
 ```{r reads_per_group_boxplot}
 readsPerGroupBoxplot(s_sheet = s_sheet, readCounts = readsPerSample)
 ```
+
+In the above plot each sample group is represented by a boxplot of reads per sample. The X-axis shows the sample group and the Y-axis shows the number of reads. Dots represent samples. 
+
+<br><br><br><br>
+
 
 ## QC on raw count matrix  {.tabset}
 
