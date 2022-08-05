@@ -201,6 +201,13 @@ trnCounts <- transformCounts(rawCounts = rawCounts, countsCutOff = 10, FUN = vst
 getPcaPlot(countsDat = trnCounts, s_sheet = s_sheet,pcaColFactor = 'SampleGroup')
 ```
 
+### PC loadings plot 
+
+```{r pc_loadings_plot}
+getPcaLoadingsPlot(countsData=trnCounts, s_sheet = s_sheet,
+                   genesToShow = NULL, gtf = gtf, topN = 10)
+```
+
 
 ### Hierarchical clustering 
 
@@ -275,10 +282,13 @@ for( i in 1:nrow(contTab)){
   
   contNames <- c(contNames, contName)
   sigUpReg <- c(sigUpReg, 
-                sum(res$log2FoldChange > 0 & res$padj < pValCutoff, na.rm=TRUE))
+                sum(res$log2FoldChange > 0 & 
+                      res$padj < pValCutoff, na.rm=TRUE))
   sigDownReg <- c(sigDownReg,
-                  sum(res$log2FoldChange < 0 & res$padj < pValCutoff, na.rm=TRUE))
+                  sum(res$log2FoldChange < 0 & 
+                        res$padj < pValCutoff, na.rm=TRUE))
   
+  # MA plot
   catHeader(text = 'MA plot', level = 4)
   p_ma <- getMAplot(res = res, numerator = numerator,
           denominator=denominator,
@@ -289,6 +299,7 @@ for( i in 1:nrow(contTab)){
   cat('\n\n\n**This is MA plot, on X axis is averege gene expression, on Y-axis log 2 fold chages.**\n\n\n')
   
   
+  # volcano plot
   catHeader(text = 'volcano plot', level = 4)
   
   p_vol <- getVolcanoPlot(res=res, numerator = numerator,
@@ -298,6 +309,7 @@ for( i in 1:nrow(contTab)){
   
   print(p_vol)
   
+  # p-value distribution plot
   catHeader(text = 'p-value distribution plot', level = 4)
   
   p_pval <- getPvalDistriPlot(res = res,
@@ -306,6 +318,35 @@ for( i in 1:nrow(contTab)){
                   pValCutoff = pValCutoff)
   
   print(p_pval)
+  
+  # Karyogram plot
+  catHeader(text = 'Karyogram plot', level = 4)
+  
+  kPlot <- getKaryogramPlot(dds=dds,
+                 numerator = numerator,
+                 denominator = denominator,
+                 factorName = factorName,gtf = gtf,
+                 pValCutoff = pValCutoff,
+                 genome = genome
+
+                  )
+  
+  print(kPlot)
+  
+  # gene counts plot
+  catHeader(text = 'Gene counts plot', level = 4)
+  
+  
+  geneCtsPlot <- getGeneCountsPlot(dds=dds,
+                  numerator = numerator, 
+                  denominator = denominator,
+                  factorName = factorName,
+                  gtf=gtf,
+                  pValCutoff=pValCutoff,
+                  topN=10, 
+                  genesToShow=genesToShow)
+  print(geneCtsPlot)
+  
   
 
 }

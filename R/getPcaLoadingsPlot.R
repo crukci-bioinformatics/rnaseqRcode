@@ -27,6 +27,7 @@ checkArg_getPcaLoadingsPlot <- function( countsData, s_sheet, gtf,
 #' @importFrom assertthat is.string
 #' @importFrom tibble rownames_to_column
 #' @importFrom purrr map_chr
+#' @importFrom ggrepel geom_text_repel
 #'
 getPcaLoadingsPlot <- function(countsData, s_sheet, gtf, topN= 10, genesToShow=NULL){
 
@@ -71,7 +72,7 @@ getPcaLoadingsPlot <- function(countsData, s_sheet, gtf, topN= 10, genesToShow=N
 
   p <- ggplot(plotData, aes(x=PC_rank, y=PC1, label = gene_name)) +
     geom_point( alpha=0.2, shape=21, size=3, fill='grey') +
-    geom_text_repel( data=texData, max.overlaps=30, size=3, color='black', fontface='bold') +
+    ggrepel::geom_text_repel( data=texData, max.overlaps=30, size=3, color='black', fontface='bold') +
     labs(
       x="Rank (PC1 Loadings)",
       y='PC1',
