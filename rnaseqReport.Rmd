@@ -46,7 +46,7 @@ catHeader <- function(text = "", level = 3, is_tabset=FALSE) {
 
 ```
 
-### Define veriables
+
 
 ```{r def_vars} 
 # define variables
@@ -184,17 +184,32 @@ In the above plot each sample group is represented by a boxplot of reads per sam
 countsDensityPlot(s_sheet = s_sheet, countsData = rawCounts)
 ```
 
+The plot above shows log2 transformed counts on the X-axis and density on the Y-axis. Low counts are indicated by density on the left side of the plot, and zero-inflated data are indicated by extreme left shifts. If a sample shows both low counts and/or zero-inflated counts, further investigation may be needed. 
+
+<br><br><br><br>
+
+
+
 ### Ribosomal read fraction
 
 ```{r robo_fraction_plot}
 riboFractionPlot(countsData = rawCounts, gtf = gtf)
 ```
 
+The above plot shows the fraction of counts from ribosomal and nonribosomal genes. A sample name appears on the X-axis, and a percentage of counts appears on the Y-axis. In ideal circumstances, the ribosomal read fraction should be much lower than the nonribosomal fraction. 
+
+<br><br><br><br>
+
 ### counts on gene biotype  
 
 ```{r gene_biotype_plot}
 plotGeneBiotypes(countsData = rawCounts, gtf=gtf)
 ```
+The plot above shows the percent of the major gene biotypes for each sample. We should expect this plot to show almost horizontal lines in a high quality data set, with proteins coding genes taking up a greater fraction of reads.
+
+<br><br><br><br>
+
+
 
 ### Library complexity
 
@@ -202,6 +217,9 @@ plotGeneBiotypes(countsData = rawCounts, gtf=gtf)
 getLibraryComplexityPlot(countsData = rawCounts, s_sheet = s_sheet)
 ```
 
+The above plot shows the complexity of a sample library. Each sample is shown what fraction of counts is accounted for by what fraction of genes. A sample with a different library complexity than the rest may be considered low quality. Each line represents a sample, and  samples are color-coded by sample group.
+
+<br><br><br><br>
 
 ### Gene detection 
 
@@ -209,7 +227,9 @@ getLibraryComplexityPlot(countsData = rawCounts, s_sheet = s_sheet)
 getGeneDetctionPlot(countsData = rawCounts, s_sheet = s_sheet)
 ```
 
+The above plot shows the number of genes detected at various thresholds for a given sample. Samples are color-coded by sample group and each line represents a sample. The 5 counts on the X-axis indicate the number of genes detected with 5 or more reads on the Y-axis. 
 
+<br><br><br><br>
 
 ## QC: Unsupervised clustering {.tabset}
 
@@ -220,12 +240,22 @@ trnCounts <- transformCounts(rawCounts = rawCounts, countsCutOff = 10, FUN = vst
 getPcaPlot(countsDat = trnCounts, s_sheet = s_sheet,pcaColFactor = 'SampleGroup')
 ```
 
-### PC loadings plot 
+
+Above PCA plot shows the first two principal components of the variance-stabilizing-transformed raw counts. Each circle is a sample and samples are color-coded by sample group.
+
+
+<br><br><br><br>
+
+### PC loadings plot  
 
 ```{r pc_loadings_plot}
 getPcaLoadingsPlot(countsData=trnCounts, s_sheet = s_sheet,
                    genesToShow = NULL, gtf = gtf, topN = 10)
 ```
+
+Above PC loadings plots shows the top genes driving a PC1 axis. Top genes with highest loadings are labeled.
+
+<br><br><br><br>
 
 
 ### Hierarchical clustering 
@@ -236,11 +266,20 @@ hierarchicalClustPlot(countsDat=trnCounts,
                       colorByCol = 'SampleGroup' )
 ```
 
-### correlogram 
+Above unsupervised hierarchical clustering plot of the variance-stabilizing-transformed raw counts showing clustering by euclidean distance. Samples are color-coded by sample group. Samples are color-coded by sample group.
+
+<br><br><br><br>
+
+
+### Correlogram 
 
 ```{r correlogram_plot}
 correlationPlot(countsMat = trnCounts, s_sheet = s_sheet)
 ```
+
+The plot above shows the pairwise correlations between all samples. In intragroup correlations, we expect higher coefficients than in intergroup correlations.
+
+<br><br><br><br>
 
 
 # DE analysis
@@ -262,11 +301,20 @@ saveCounts(dds = dds, txi = txi, countsDir = countsDir, gtf = gtf )
 normFactorsBoxplot(dds=dds)
 ```
 
+The plots above show the raw and normalized data. Normalization factors are shown in the top plot, log2 transformed raw counts in the middle, and normalized counts in the bottom plot.
+
+<br><br><br><br>
+
 ### Dispersion estimates plot
 
 ```{r dispersion_plot}
 plotDispEsts(dds)
 ```
+
+Above plot shows the per-gene dispersion estimates together with the fitted mean-dispersion relationship.
+
+<br><br><br><br>
+
 
 ### heat-map with top variable genes 
 
@@ -274,6 +322,9 @@ plotDispEsts(dds)
 getHeatmap(dds=dds, topN=500, annoGroup = c('SampleGroup'))
 ```
 
+The above plot shows a heatmap of the top 500 highly variable genes.
+
+<br><br><br><br>
 
 ## Differential testing {.tabset}
 
@@ -315,7 +366,7 @@ for( i in 1:nrow(contTab)){
   
   print(p_ma)
   
-  cat('\n\n\n**This is MA plot, on X axis is averege gene expression, on Y-axis log 2 fold chages.**\n\n\n')
+  #cat('\n\n\nThis is MA plot, on X axis is averege gene expression, on Y-axis log 2 fold chages.\n\n\n')
   
   
   # volcano plot
