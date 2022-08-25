@@ -32,7 +32,7 @@ readsPerGroupBoxplot <- function(s_sheet, readCounts){
   len <- length(unique(readCounts$SampleGroup))
 
   p <- ggplot(data=readCounts, mapping = aes(x=SampleGroup, y=fragments, color=SampleGroup)) +
-    geom_boxplot(fill='black', color='grey') +
+    geom_boxplot(fill='white', color='gray0') +
     geom_point(position = position_jitterdodge()) +
     theme_classic() +
 
@@ -44,8 +44,7 @@ readsPerGroupBoxplot <- function(s_sheet, readCounts){
     scale_color_manual(values = rep('orange',len) ) +
 
     theme(
-      plot.title = element_text(hjust = 0.5, size=15, color='brown', face='bold'),
-      axis.text = element_text(color='blue', face='bold'),
+      plot.title = element_text(hjust = 0.5, size=15, color='black', face='bold'),
       axis.text.x = element_text(angle = 45, vjust = 0.5),
       legend.position = "none"
     )
