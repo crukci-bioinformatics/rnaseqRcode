@@ -67,7 +67,8 @@ genesToShow <- 'ESR1'
 #################### LOAD DATA ######################################
 # load sample metadata
 s_sheet <- read_csv('data/samplesheet_corrected.csv', progress=FALSE, 
-                   show_col_types = FALSE)
+                   show_col_types = FALSE) %>% 
+  arrange(SampleGroup)
 
 # load tx2gene data
 tx2gene <- read_tsv(tx2geneFile, show_col_types = FALSE)
@@ -101,12 +102,7 @@ if (noGroups < length(colVector) ){
 
 s_sheet %>% 
   arrange('SampleGroup') %>% 
-  datatable(style='bootstrap') %>% 
-  formatStyle(
-    columns = 'SampleGroup',
-    target = 'row',
-    color= styleEqual(groupNames, groupColors)
-  )
+  datatable(style='bootstrap') 
 ```
 The following table contains meta data that was provided to us.  
 
@@ -150,7 +146,7 @@ readsPerSample %>%
 
 ```
 
-The above table shows the number of reads or read pairs or fragments (millions) for each sample. For standard differential expression studies, we recommend at least **$\color{brown}{\text{20 million}}$** reads.
+The above table shows the number of reads or read pairs or fragments (millions) for each sample. For standard differential expression studies, we recommend at least **20 million** reads.
 
 <br><br><br><br>
 
@@ -158,10 +154,10 @@ The above table shows the number of reads or read pairs or fragments (millions) 
 ### barplot: Reads / sample 
 
 ```{r reads_per_sample_bp}
-readsPerSampleBarPlot(readCounts = readsPerSample)
+readsPerSampleBarPlot(readCounts = readsPerSample, s_sheet = s_sheet)
 ```
 
-The barplot above shows the number of reads per sample. The X-axis shows the number of reads or read pairs or fragments in million, and the Y-axis shows the sample name. The yellow line shows the recommended number of reads i.e  **$\color{brown}{\text{20 million}}$** reads.
+The barplot above shows the number of reads per sample. The X-axis shows the number of reads or read pairs or fragments in million, and the Y-axis shows the sample name. The yellow line shows the recommended number of reads i.e  **20 million** reads.
 
 <br><br><br><br>
 
@@ -194,7 +190,7 @@ The plot above shows log2 transformed counts on the X-axis and density on the Y-
 ### Ribosomal read fraction
 
 ```{r robo_fraction_plot}
-riboFractionPlot(countsData = rawCounts, gtf = gtf)
+riboFractionPlot(countsData = rawCounts, gtf = gtf, s_sheet = s_sheet)
 ```
 
 The above plot shows the fraction of counts from ribosomal and nonribosomal genes. A sample name appears on the X-axis, and a percentage of counts appears on the Y-axis. In ideal circumstances, the ribosomal read fraction should be much lower than the nonribosomal fraction. 
@@ -204,7 +200,7 @@ The above plot shows the fraction of counts from ribosomal and nonribosomal gene
 ### counts on gene biotype  
 
 ```{r gene_biotype_plot}
-plotGeneBiotypes(countsData = rawCounts, gtf=gtf)
+plotGeneBiotypes(countsData = rawCounts, gtf=gtf, s_sheet = s_sheet)
 ```
 The plot above shows the percent of the major gene biotypes for each sample. We should expect this plot to show almost horizontal lines in a high quality data set, with proteins coding genes taking up a greater fraction of reads.
 
@@ -234,11 +230,38 @@ The above plot shows the number of genes detected at various thresholds for a gi
 
 ## QC: Unsupervised clustering {.tabset}
 
-### PCA 
+### PCA Analysis {.tabset} 
 
-```{r PCA_plot}
+#### PC1 and PC2
+
+```{r PC1_and_PC2_plot}
 trnCounts <- transformCounts(rawCounts = rawCounts, countsCutOff = 10, FUN = vst)
-getPcaPlot(countsDat = trnCounts, s_sheet = s_sheet,pcaColFactor = 'SampleGroup')
+getPcaPlot(countsDat = trnCounts, 
+           s_sheet = s_sheet,
+           pcaColFactor = 'SampleGroup',
+           PCx = 1,
+           PCy = 2)
+```
+
+#### PC1 and PC3
+
+```{r PC1_and_PC3_plot}
+getPcaPlot(countsDat = trnCounts, 
+           s_sheet = s_sheet,
+           pcaColFactor = 'SampleGroup',
+           PCx = 1,
+           PCy = 3)
+```
+
+
+#### PC2 and PC3
+
+```{r PC2_and_PC3_plot}
+getPcaPlot(countsDat = trnCounts, 
+           s_sheet = s_sheet,
+           pcaColFactor = 'SampleGroup',
+           PCx = 2,
+           PCy = 3)
 ```
 
 
@@ -247,7 +270,7 @@ Above PCA plot shows the first two principal components of the variance-stabiliz
 
 <br><br><br><br>
 
-### PC loadings plot  
+#### PC loadings plot  
 
 ```{r pc_loadings_plot}
 getPcaLoadingsPlot(countsData=trnCounts, s_sheet = s_sheet,
@@ -296,10 +319,19 @@ saveCounts(dds = dds, txi = txi, countsDir = countsDir, gtf = gtf )
 
 ## DESeq2 QC plots {.tabset}
 
-### Normalisation plot 
+### Normalisation plots {.tabset}
 
-```{r norm_plots}
-normFactorsBoxplot(dds=dds)
+#### Raw counts distribution
+
+```{r raw_counts_dist_plot}
+normPlots <- normFactorsBoxplot(dds=dds)
+print(normPlots$pRawCounts)
+```
+
+#### Normalised counts distribution
+
+```{r norm_counts_dist_plot}
+print(normPlots$pNormCounts)
 ```
 
 The plots above show the raw and normalized data. Normalization factors are shown in the top plot, log2 transformed raw counts in the middle, and normalized counts in the bottom plot.
@@ -439,7 +471,7 @@ deSumTab %>%
   formatStyle(
     columns = 'contrast',
     target = 'cell',
-    color= 'blue',
+    color= 'black',
     ontWeight='bold'
   )
 
