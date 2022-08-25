@@ -113,7 +113,7 @@ readsPerGroupBoxplot(s_sheet = s_sheet, readCounts = readsPerSample)
 ###################################################################################
 # corrillationPlot
 use_r("correlationPlot")
-correlationPlot(countsMat = trnCounts, s_sheet = s_sheet)
+correlationPlot(countsMat = trnCounts, s_sheet = s_sheet, topN=1000)
 ###################################################################################
 
 
@@ -121,7 +121,7 @@ correlationPlot(countsMat = trnCounts, s_sheet = s_sheet)
 # Fraction of ribosomal genes
 gtf <- loadGTF(gtfFile = 'data/references/mmu.GRCm38.gtf')
 use_r('riboFractionPlot')
-riboFractionPlot(countsData = rawCounts, gtf = gtf )
+riboFractionPlot(countsData = rawCounts, gtf = gtf, s_sheet = s_sheet )
 ###################################################################################
 
 
@@ -147,7 +147,9 @@ plotDispEsts(dds)
 
 ###################################################################################
 use_r('normFactorsBoxplot')
-normFactorsBoxplot(dds=dds)
+nomSplots <- normFactorsBoxplot(dds=dds)
+print(nomSplots$pRawCounts)
+print(nomSplots$pNormCounts)
 ###################################################################################
 
 ###################################################################################
@@ -164,6 +166,7 @@ contrastFile = 'contrasts.csv'
 factorName <- 'SampleGroup'
 numerator <- 'Infected_d33'
 denominator <- 'Uninfected_d33'
+DeOutDir <- 'data/DEAnalysis/'
 use_r("writeAndPlotDEResults")
 
 res <- writeAndPlotDEResults(dds = dds,
@@ -245,7 +248,7 @@ use_r("addGeneInfoFromGtfToResTab")
 
 ###################################################################################
 use_r('plotGeneBiotypes')
-plotGeneBiotypes(countsData = rawCounts, gtf=gtf)
+plotGeneBiotypes(countsData = rawCounts, gtf=gtf, s_sheet = s_sheet)
 ###################################################################################
 
 ###################################################################################
@@ -272,7 +275,7 @@ getGeneCountsPlot(dds=dds,
                   factorName = factorName,
                   gtf=gtf,
                   pValCutoff=pValCutoff,
-                  topN=10, genesToShow=genesToShow)
+                  topN=3, genesToShow=genesToShow)
 ###################################################################################
 
 
@@ -286,6 +289,7 @@ getPcaLoadingsPlot(countsData=trnCounts, s_sheet = s_sheet,
 ###################################################################################
 # # karyogram plot
 use_r("getKaryogramPlot")
+genome <- 'mus musculus'
 getKaryogramPlot(dds=dds,
                  numerator = numerator,
                  denominator = denominator,
