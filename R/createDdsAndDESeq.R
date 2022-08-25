@@ -25,7 +25,7 @@ createDdsAndDESeq <- function(txi, s_sheet, design, fitType = 'parametric'){
   ddsRaw <- DESeqDataSetFromTximport(txi = txi,
                                          colData = s_sheet,
                                          design = as.formula(design))
-  ddsFilt <- ddsRaw[rowSums(counts(ddsRaw)) > 0, ]
+  ddsFilt <- ddsRaw[rowSums(counts(ddsRaw)) > 5, ]
 
   dds <- estimateSizeFactors(ddsFilt)
   dds <- estimateDispersions(dds, fitType=fitType)
