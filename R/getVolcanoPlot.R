@@ -64,7 +64,6 @@ getVolcanoPlot <- function( res, numerator,
 
   p <- ggplot(res, aes(x=log2FoldChange, y=modPval, fill=is_significant)) +
     geom_point( shape=21, alpha=0.5, size=2) +
-    geom_hline(yintercept = 0) +
     geom_text(data=topGenes, mapping = aes(x=log2FoldChange, y=modPval, label=gene_name),
               inherit.aes=FALSE,
               check_overlap=TRUE,
@@ -84,11 +83,11 @@ getVolcanoPlot <- function( res, numerator,
          x = 'log2 fold change',
          title = pTitle) +
     scale_fill_manual(values = c("#999999", "#F0E442", "#D55E00")) +
+    theme_classic() +
     theme(
       panel.background = element_blank(),
-      axis.text = element_text(color='blue', face='bold'),
       legend.position = 'bottom',
-      plot.title = element_text(size=15, color='brown', hjust=0.5, face='bold')
+      plot.title = element_text(size=15, color='black', hjust=0.5, face='bold')
     )
 
   return(p)
