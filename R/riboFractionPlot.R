@@ -1,12 +1,14 @@
-argCheck_riboFractionPlot <- function(countsData, gtf){
+argCheck_riboFractionPlot <- function(countsData, gtf, s_sheet){
   assert_that(is.matrix(countsData))
   assert_that(is(gtf, 'GRanges') )
+  is_validMetaData(s_sheet = s_sheet, columnsToCheck = 'SampleName')
 }
 
 #' Get Ribosomal and Nonribosomal counts barplot.
 #'
 #' @param countsData a matrix; counts matrix preferably raw counts matrix.
 #' @param gtf a GRanges object; gft
+#' @param s_sheet  a data frame; sample meta data sheet
 #'
 #' @return An object created by \code{ggplot}
 #' @export riboFractionPlot
@@ -21,9 +23,14 @@ argCheck_riboFractionPlot <- function(countsData, gtf){
 #' @importFrom tibble rownames_to_column
 
 
-riboFractionPlot <- function(countsData, gtf){
+riboFractionPlot <- function(countsData, gtf, s_sheet){
 
-  argCheck_riboFractionPlot(countsData = countsData, gtf = gtf)
+  argCheck_riboFractionPlot(countsData = countsData,
+                            gtf = gtf,
+                            s_sheet = s_sheet)
+
+  s_sheet <- s_sheet %>%
+    arrange(SampleGroup)
 
   gtf <- gtf %>%
     .[.$type == 'gene'] %>%
@@ -47,7 +54,9 @@ riboFractionPlot <- function(countsData, gtf){
 
   sumTab <- inner_join(sumTab, totCounts, by='SampleName') %>%
     mutate(percentCounts = (counts / totalCounts) * 100 ) %>%
-    mutate(Source = fct_relevel(Source, c('Ribosomal', 'Nonribosomal')))
+    mutate(Source = fct_relevel(Source, c('Ribosomal', 'Nonribosomal'))) %>%
+    mutate(SampleName = factor(SampleName, levels = as.vector(s_sheet$SampleName)))
+
 
   p <- ggplot(data=sumTab, mapping = aes(x=SampleName, y=percentCounts, fill=Source)) +
     geom_bar( stat = 'identity') +
@@ -56,14 +65,11 @@ riboFractionPlot <- function(countsData, gtf){
       y='% Counts',
       title = 'Ribosomal and Nonribosomal read fraction'
     ) +
-    scale_fill_manual(values = c('violet', 'tan') ) +
     theme(
       panel.background = element_blank(),
       axis.text.x = element_text(angle=90),
-      axis.ticks.x = element_blank(),
-      axis.text  = element_text(color='blue', face='bold'),
       legend.position = 'bottom',
-      plot.title = element_text(size=15, face='bold', color='brown', hjust = 0.5)
+      plot.title = element_text(size=15, face='bold', color='black', hjust = 0.5)
     )
 
   return(p)
