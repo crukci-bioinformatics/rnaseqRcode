@@ -1,12 +1,15 @@
 # check arguments
 checkArg_hierarchicalClustPlot <- function(countsDat, s_sheet, colorByCol='SampleGroup',
-                                           horizontal=TRUE, sampleColors=NULL, title=""){
+                                           horizontal=TRUE,
+                                           sampleColors=NULL,
+                                           title="", topN){
   assert_that(is.matrix(countsDat))
   assert_that(is.string(colorByCol))
   assert_that(is_validMetaData(s_sheet, columnsToCheck = colorByCol))
   assert_that(is.flag(horizontal))
   assert_that(is_validSampleColors(s_sheet=s_sheet, sampleColors=sampleColors, colorByCol=colorByCol))
   assert_that(is.string(title))
+  assert_that(is.numeric(topN))
 }
 #' Hierarchical clustering plot
 #' Computes and displays hierarchical clustering plot for samples in a given counts data
@@ -18,6 +21,7 @@ checkArg_hierarchicalClustPlot <- function(countsDat, s_sheet, colorByCol='Sampl
 #' @param horizontal a boolean value; orientation of the dendrogram. Default is TRUE.
 #' @param sampleColors a vector of colors; if NULL, colors are automatically assigned.
 #' @param title a character vector; the main title for the dendrogram.
+#' @param topN an integer; top highly variable genes
 #'
 #' @return An object created by \code{ggplot}
 #' @export hierarchicalClustPlot
@@ -33,8 +37,12 @@ checkArg_hierarchicalClustPlot <- function(countsDat, s_sheet, colorByCol='Sampl
 #' @importFrom utils head
 #' @importFrom assertthat is.string is.flag
 #'
-hierarchicalClustPlot <- function(countsDat, s_sheet, colorByCol='SampleGroup',
-                                  horizontal=TRUE, sampleColors=NULL, title=""){
+hierarchicalClustPlot <- function(countsDat, s_sheet,
+                                  colorByCol='SampleGroup',
+                                  horizontal=TRUE,
+                                  sampleColors=NULL,
+                                  title="",
+                                  topN=1000){
 
   if(is.null(sampleColors)){
     sampleColors <- assignColors(s_sheet=s_sheet, colorByCol=colorByCol)
@@ -45,7 +53,10 @@ hierarchicalClustPlot <- function(countsDat, s_sheet, colorByCol='SampleGroup',
                                  sampleColors = sampleColors ,
                                  colorByCol=colorByCol,
                                  horizontal=horizontal,
-                                 title=title)
+                                 title=title,
+                                 topN=topN)
+
+  countsDat <- getTopVarGenes(countsDat =countsDat, topN=topN )
 
   dendroData <- t(countsDat) %>%
     dist(method = "euclidean") %>%
@@ -58,6 +69,7 @@ hierarchicalClustPlot <- function(countsDat, s_sheet, colorByCol='SampleGroup',
     left_join(s_sheet, "SampleName")
 
   axisBreaks <- pretty(dendroData$segments$yend)
+
   hcPlot <- ggplot(dendroData$segment) +
     geom_segment(aes(x = x, y = y, xend = xend, yend = yend)) +
     geom_label(data = labelDat,
@@ -70,14 +82,14 @@ hierarchicalClustPlot <- function(countsDat, s_sheet, colorByCol='SampleGroup',
                fontface = "bold") +
     labs(x = NULL, y = "Distance", title = NULL) +
     scale_y_reverse(expand = c(0.2, 0), breaks = axisBreaks) +
-    coord_flip() +
+    coord_flip(clip = "off") +
     theme(axis.title.y = element_blank(),
           axis.text.y = element_blank(),
           axis.ticks.y = element_blank(),
           plot.title = element_text(hjust = 0.5),
           panel.background = element_blank(),
-          axis.text.x = element_text(face='bold', color='blue'),
-          legend.position = 'top')
+          legend.position = 'top',
+          plot.margin = margin(2, 4, 2, 2, "cm"))
 
   return(hcPlot)
 }
