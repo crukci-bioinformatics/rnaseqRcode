@@ -57,7 +57,11 @@ trnCounts <- transformCounts(rawCounts = rawCounts, countsCutOff = 10, FUN = vst
 ###################################################################################
 # PCA plos
 use_r('getPcaPlot')
-getPcaPlot(countsDat = trnCounts, s_sheet = s_sheet,pcaColFactor = 'SampleGroup')
+getPcaPlot(countsDat = trnCounts,
+           s_sheet = s_sheet,
+           pcaColFactor = 'SampleGroup',
+           PCx = 1,
+           PCy=2)
 ###################################################################################
 
 ###################################################################################
