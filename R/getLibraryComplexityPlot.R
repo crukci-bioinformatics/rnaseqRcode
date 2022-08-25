@@ -46,11 +46,11 @@ getLibraryComplexityPlot <- function(countsData, s_sheet){
       color='Sample Group',
       title = 'Library complexity'
     ) +
+    theme_classic() +
     theme(
       panel.background = element_blank(),
-      axis.text = element_text(color='blue'),
       legend.position = 'bottom',
-      plot.title = element_text(color='brown', hjust = 0.5, size=15, face='bold')
+      plot.title = element_text(color='black', hjust = 0.5, size=15, face='bold')
     )
   return(p)
 }
