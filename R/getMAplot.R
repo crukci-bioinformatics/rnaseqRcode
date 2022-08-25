@@ -43,7 +43,6 @@ getMAplot <- function(res, numerator, denominator,
       map_chr(str_remove_all, ' ')
   }
 
-
   res <- res %>%
     mutate(is_significant = if_else( padj < pValCutoff, 'Significant', 'Not significant', missing = 'NA')) %>%
     arrange(padj)
@@ -56,8 +55,6 @@ getMAplot <- function(res, numerator, denominator,
     filter( gene_name %in% genesToShow)
 
   pTitle <- str_c(numerator , 'vs', denominator, sep=' ')
-
-
 
   p <- ggplot(res, aes(x=log2(baseMean), y=log2FoldChange, fill=is_significant)) +
     geom_point( shape=21, alpha=0.5, size=2) +
@@ -81,13 +78,12 @@ getMAplot <- function(res, numerator, denominator,
          y = 'log2 fold change',
          title = pTitle) +
     scale_fill_manual(values = c("#999999", "#F0E442", "#D55E00")) +
+    theme_classic() +
     theme(
       panel.background = element_blank(),
-      axis.text = element_text(color='blue', face='bold'),
+      #axis.text = element_text(color='blue', face='bold'),
       legend.position = 'bottom',
-      plot.title = element_text(size=15, color='brown', hjust=0.5, face='bold')
+      plot.title = element_text(size=15, color='black', hjust=0.5, face='bold')
     )
-
   return(p)
-
 }
