@@ -89,7 +89,7 @@ hierarchicalClustPlot <- function(countsDat, s_sheet,
           plot.title = element_text(hjust = 0.5),
           panel.background = element_blank(),
           legend.position = 'top',
-          plot.margin = margin(2, 4, 2, 2, "cm"))
+          plot.margin = margin(0, 4, 0, 0, "cm"))
 
   return(hcPlot)
 }
