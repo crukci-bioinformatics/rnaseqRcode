@@ -34,7 +34,6 @@ getPvalDistriPlot <- function(res, numerator, denominator, pValCutoff){
 
   p <- ggplot(res, aes(x=pvalue)) +
     geom_histogram(bins=20, fill='white', color='darkgrey', size=1, na.rm =TRUE ) +
-    #scale_color_manual(values = c('black', 'orange')) +
     labs(x='p values',
          y='Frequency',
          title = pTitle
