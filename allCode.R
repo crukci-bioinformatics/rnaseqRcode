@@ -68,7 +68,7 @@ use_r('checkArguments')
 ###################################################################################
 # assign colors
 use_r('assignColors')
-assignColors(s_sheet = s_sheet, colorByCol = 'SampleName')
+selectedColors <- assignColors(s_sheet = s_sheet, colorByCol = 'SampleGroup')
 ###################################################################################
 
 ###################################################################################
@@ -95,10 +95,11 @@ readsPerSample <- getReadCountsFromSalmonLogs(s_sheet = s_sheet, quantOut = quan
 
 ###################################################################################
 # reads per sample barplot
-readCounts <- readsPerSample
+readCounts <- readsPerSample %>%
+  mutate(fragments=fragments/1000000)
 use_r('readsPerSampleBarPlot')
 
-readsPerSampleBarPlot(readCounts = readsPerSample)
+readsPerSampleBarPlot(readCounts = readCounts, s_sheet = s_sheet)
 ###################################################################################
 
 ###################################################################################
