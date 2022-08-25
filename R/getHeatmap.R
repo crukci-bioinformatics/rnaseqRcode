@@ -31,7 +31,7 @@ getHeatmap <- function(dds, topN=500, annoGroup = 'SampleGroup'){
   zMatrix <- t(scale(t(topVriableMat), center=TRUE, scale=TRUE))
 
   absZval <- round(max(abs(range(zMatrix)) ) )
-  selColors <- c("purple", "white", "orange")
+  selColors <- c("blue", "white", "red")
   colRamp <- colorRamp2(c(-absZval, 0, absZval), selColors)
 
   set.seed(1)
