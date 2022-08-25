@@ -57,11 +57,11 @@ getGeneDetctionPlot <- function(countsData, s_sheet, thresholds=seq(0,50, by=5))
       color='Sample Group',
       title = 'Gene detection'
     ) +
+    theme_classic() +
     theme(
       panel.background = element_blank(),
-      axis.text = element_text(color='blue'),
       legend.position = 'bottom',
-      plot.title = element_text(color='brown', hjust = 0.5, size=15, face='bold')
+      plot.title = element_text(color='black', hjust = 0.5, size=15, face='bold')
     )
 
   return(p)

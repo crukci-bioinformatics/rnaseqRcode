@@ -96,9 +96,9 @@ getGeneCountsPlot <- function(dds, factorName, numerator,
       x='Sample Group',
       y='Counts (log2)'
     ) +
+    theme_classic() +
     theme(
       panel.background = element_blank(),
-      axis.text = element_text(color='blue'),
       axis.text.x = element_text(angle = 90)
     ) +
     facet_wrap(vars(gene_name))
