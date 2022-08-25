@@ -71,18 +71,18 @@ getPcaLoadingsPlot <- function(countsData, s_sheet, gtf, topN= 10, genesToShow=N
     filter(gene_name %in% topNfeatures)
 
   p <- ggplot(plotData, aes(x=PC_rank, y=PC1, label = gene_name)) +
-    geom_point( alpha=0.2, shape=21, size=3, fill='grey') +
+    geom_point( alpha=0.2, shape=21, size=1, fill='grey') +
     ggrepel::geom_text_repel( data=texData, max.overlaps=30, size=3, color='black', fontface='bold') +
     labs(
       x="Rank (PC1 Loadings)",
       y='PC1',
       title = "PC1's largest contributing genes"
     ) +
+    theme_classic()+
     theme(
       panel.background = element_blank(),
-      axis.text = element_text( color = 'blue'),
       axis.text.x = element_text(angle=90),
-      plot.title = element_text(color='brown', hjust = 0.5, size=15, face='bold')
+      plot.title = element_text(color='black', hjust = 0.5, size=15, face='bold')
     )
 
   return(p)
