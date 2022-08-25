@@ -5,7 +5,9 @@ library(tximport)
 library(tidyverse)
 library(DESeq2)
 s_sheet <- read_csv("data/samplesheet_corrected.csv") %>%
-  arrange(SampleGroup,Replicate)
+  arrange(SampleGroup,Replicate) %>%
+  mutate(SampleName=factor(SampleName, levels = SampleName))
+
 quantOut <- "data/quantOut"
 tx2gene <- read_tsv("data/references/tx2gene.tsv")
 
@@ -72,7 +74,9 @@ assignColors(s_sheet = s_sheet, colorByCol = 'SampleName')
 ###################################################################################
 # hierarchical clustering plot
 use_r('hierarchicalClustPlot')
-hierarchicalClustPlot(countsDat=trnCounts, s_sheet = s_sheet, colorByCol = 'SampleGroup', title = 'RNAse exp' )
+hierarchicalClustPlot(countsDat=trnCounts, s_sheet = s_sheet,
+                      colorByCol = 'SampleGroup',
+                      title = 'RNAse exp', topN=1000 )
 ###################################################################################
 
 
@@ -289,6 +293,14 @@ getKaryogramPlot(dds=dds,
                  genome = genome
 
                   )
+###################################################################################
+
+
+###################################################################################
+# get top highly variable genes
+use_r("getTopVarGenes")
+load_all()
+topX <- getTopVarGenes(countsDat = trnCounts, topN = 1000)
 ###################################################################################
 
 

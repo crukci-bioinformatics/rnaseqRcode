@@ -48,6 +48,7 @@ catHeader <- function(text = "", level = 3, is_tabset=FALSE) {
 
 
 
+
 ```{r def_vars} 
 # define variables
 projectName <- 'Test project'
