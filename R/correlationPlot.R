@@ -1,7 +1,8 @@
-checkArg_correlationPlot <- function(countsMat, s_sheet){
+checkArg_correlationPlot <- function(countsMat, s_sheet, topN){
   assert_that(is.matrix(countsMat))
   is_validMetaData(s_sheet = s_sheet, columnsToCheck = 'SampleName')
   is_validMetaData(s_sheet = s_sheet, columnsToCheck = 'SampleGroup')
+  assert_that(is.numeric(topN))
 }
 #' Correlation plot from counts matrix
 #'
@@ -16,9 +17,11 @@ checkArg_correlationPlot <- function(countsMat, s_sheet){
 #' @importFrom pheatmap pheatmap
 #' @importFrom stats cor
 #'
-correlationPlot <- function(countsMat, s_sheet){
+correlationPlot <- function(countsMat, s_sheet, topN=1000){
 
-  checkArg_correlationPlot(countsMat=countsMat, s_sheet = s_sheet)
+  checkArg_correlationPlot(countsMat=countsMat, s_sheet = s_sheet, topN=topN)
+
+  countsMat <- getTopVarGenes(countsDat = countsMat, topN = topN)
 
   corrMat <- cor(countsMat)
 
