@@ -24,7 +24,6 @@ checkArg_getPvalDistriPlot <- function(res, numerator, denominator, pValCutoff){
 #' @importFrom magrittr %>%
 #' @importFrom assertthat is.string
 
-
 getPvalDistriPlot <- function(res, numerator, denominator, pValCutoff){
 
   checkArg_getPvalDistriPlot( res=res, numerator=numerator,
@@ -32,21 +31,18 @@ getPvalDistriPlot <- function(res, numerator, denominator, pValCutoff){
                               pValCutoff=pValCutoff )
 
   pTitle <- str_c( numerator, 'vs', denominator, sep=' ')
-  res <- res %>%
-    mutate(Truth = if_else( pvalue < pValCutoff, 'Alternate', 'Null')) %>%
-    arrange(padj)
 
-  p <- ggplot(res, aes(x=pvalue, color=Truth)) +
-    geom_histogram(bins=20, fill='white', size=1, na.rm =TRUE ) +
-    scale_color_manual(values = c('black', 'orange')) +
+  p <- ggplot(res, aes(x=pvalue)) +
+    geom_histogram(bins=20, fill='white', color='darkgrey', size=1, na.rm =TRUE ) +
+    #scale_color_manual(values = c('black', 'orange')) +
     labs(x='p vlues',
          y='Frequency',
          title = pTitle
     ) +
+    theme_classic() +
     theme(
       panel.background = element_blank(),
-      axis.text = element_text(color='blue'),
-      plot.title = element_text(color='brown', size=15, hjust=0.5, face='bold'),
+      plot.title = element_text(color='black', size=15, hjust=0.5, face='bold'),
       legend.position = 'bottom'
     )
   return(p)
