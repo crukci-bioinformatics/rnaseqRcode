@@ -23,7 +23,7 @@ countsDensityPlot <- function(s_sheet, countsData){
 
   checkArg_countsDensityPlot(s_sheet=s_sheet, countsData=countsData)
 
-  tab <- countsData[rowSums(countsData) > 0, ] %>%
+  tab <- countsData[rowSums(countsData) > 5, ] %>%
     as.data.frame() %>%
     rownames_to_column(var='gene_id') %>%
     pivot_longer(cols = -gene_id, names_to = 'SampleName', values_to = 'counts') %>%
@@ -36,11 +36,10 @@ countsDensityPlot <- function(s_sheet, countsData){
       x='Counts(log2 + 1)',
       title = 'Count Density'
     ) +
+    theme_classic() +
     theme(
       legend.position = 'bottom',
-      panel.background = element_blank(),
-      axis.text = element_text(color='blue', face='bold'),
-      plot.title = element_text(size=20, face='bold', color='brown', hjust = 0.5)
+      plot.title = element_text(size=20, face='bold', color='black', hjust = 0.5)
     )
   return(p)
 }
