@@ -1,13 +1,15 @@
 # check arguments
-checkArg_plotGeneBiotypes <- function(countsData, gtf){
+checkArg_plotGeneBiotypes <- function(countsData, gtf, s_sheet){
   assert_that(is.matrix(countsData))
   assert_that(is(gtf, 'GRanges'))
+  assert_that(is_validMetaData(s_sheet, columnsToCheck = c('SampleName')))
 }
 
 #' gives Gene biotypes read share
 #'
 #' @param countsData counts matrix
 #' @param gtf GRanges object
+#' @param s_sheet a data frame; sample metadata
 #'
 #' @return An object created by \code{ggplot}
 #' @export plotGeneBiotypes
@@ -22,12 +24,17 @@ checkArg_plotGeneBiotypes <- function(countsData, gtf){
 #' @importFrom tidyr pivot_longer
 #'
 
-plotGeneBiotypes <- function(countsData, gtf){
+plotGeneBiotypes <- function(countsData, gtf, s_sheet){
 
-  checkArg_plotGeneBiotypes(countsData = countsData, gtf=gtf)
+  checkArg_plotGeneBiotypes(countsData = countsData, gtf=gtf, s_sheet=s_sheet)
 
 
-  otherType <- c('TEC', 'sense overlapping', 'antisense', 'sense intronic', 'processed transcript', 'misc RNA', 'ribozyme')
+  s_sheet <- s_sheet %>%
+    arrange(SampleGroup)
+
+  otherType <- c('TEC', 'sense overlapping', 'antisense',
+                 'sense intronic', 'processed transcript',
+                 'misc RNA', 'ribozyme')
   smallRNA <- c( 'miRNA', 'scRNA', 'snRNA', 'snoRNA', 'sRNA', 'scaRNA')
   mtRNA <- c( 'Mt rRNA', 'Mt tRNA')
 
@@ -62,7 +69,8 @@ plotGeneBiotypes <- function(countsData, gtf){
     summarise(totalCounts = sum(counts) )
 
   combTab <- left_join(countsData, totCountsTab, by='SampleName') %>%
-    mutate(countsPecent = round((counts/totalCounts) * 100, digits = 2))
+    mutate(countsPecent = round((counts/totalCounts) * 100, digits = 2)) %>%
+    mutate( SampleName = factor(SampleName, levels = s_sheet$SampleName))
 
   p <- ggplot(combTab, aes(x=SampleName, y=countsPecent, group=gene_biotype, color=gene_biotype)) +
     geom_point() +
@@ -73,10 +81,11 @@ plotGeneBiotypes <- function(countsData, gtf){
       title='Gene biotypes read share',
       color='Gene biotype'
     ) +
+    theme_classic() +
     theme(
       panel.background = element_blank(),
-      axis.text = element_text(color='blue'),
-      plot.title = element_text(hjust = 0.5, color='brown', size=15, face='bold'),
+      #axis.text = element_text(color='blue'),
+      plot.title = element_text(hjust = 0.5, color='black', size=15, face='bold'),
       axis.text.x = element_text(angle = 90)
     )
 
