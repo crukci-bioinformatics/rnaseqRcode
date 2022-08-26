@@ -51,7 +51,7 @@ get3dPCAplot <- function(countsDat, s_sheet, pcaColFactor="SampleGroup"){
 
   fig <- fig %>%
     layout(
-      title = 'title',
+      title = '3D PCA',
       scene = list(bgcolor = "white",
                    xaxis=list(title=list(text=pc1Var)),
                    yaxis=list(title=list(text=pc2Var)),
