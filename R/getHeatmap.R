@@ -25,9 +25,8 @@ getHeatmap <- function(dds, topN=500, annoGroup = 'SampleGroup'){
 
   rawCounts <- counts(dds, normalized=FALSE)
   trnsCounts <- vst(rawCounts)
+  topVriableMat <- getTopVarGenes(countsDat = trnsCounts, topN = topN)
 
-  vars <- rowVars(trnsCounts)
-  topVriableMat <- trnsCounts[head(order(vars, decreasing=TRUE), n=topN ), ]
   zMatrix <- t(scale(t(topVriableMat), center=TRUE, scale=TRUE))
 
   absZval <- round(max(abs(range(zMatrix)) ) )

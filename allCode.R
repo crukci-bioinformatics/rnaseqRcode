@@ -171,6 +171,7 @@ factorName <- 'SampleGroup'
 numerator <- 'Infected_d33'
 denominator <- 'Uninfected_d33'
 DeOutDir <- 'data/DEAnalysis/'
+pValCutoff <- 0.05
 use_r("writeAndPlotDEResults")
 
 res <- writeAndPlotDEResults(dds = dds,
@@ -179,7 +180,7 @@ res <- writeAndPlotDEResults(dds = dds,
                       denominator=denominator,
                       gtf = gtf,
                       DeOutDir = DeOutDir,
-                      pValCutoff = 0.05
+                      pValCutoff = pValCutoff
                       )
 ###################################################################################
 
@@ -211,7 +212,7 @@ use_r("getVolcanoPlot")
 getVolcanoPlot(res=res, numerator = numerator,
                denominator = denominator,
                topN = 100, genesToShow = 'ESR1',
-               pValCutoff = 0.05)
+               pValCutoff = pValCutoff)
 ###################################################################################
 
 
@@ -274,6 +275,7 @@ getGeneDetctionPlot(countsData = rawCounts, s_sheet = s_sheet)
 ###################################################################################
 # Counts distribution plots on random genes
 use_r("getGeneCountsPlot")
+genesToShow = c('ESR1')
 getGeneCountsPlot(dds=dds,
                   numerator = numerator, denominator = denominator,
                   factorName = factorName,
@@ -311,6 +313,14 @@ use_r("getTopVarGenes")
 load_all()
 topX <- getTopVarGenes(countsDat = trnCounts, topN = 1000)
 ###################################################################################
+
+###################################################################################
+# 3D PCA plot
+use_r('get3dPCAplot')
+x <- get3dPCAplot(countsDat = trnCounts, s_sheet = s_sheet, pcaColFactor = 'SampleGroup')
+print(x)
+###################################################################################
+
 
 
 ###################################################################################

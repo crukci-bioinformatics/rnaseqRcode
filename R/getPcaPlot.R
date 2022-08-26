@@ -2,8 +2,8 @@
 checkArg_getPcaPlot <- function(countsDat, s_sheet, columnsToCheck, PCx, PCy) {
   assert_that(is.matrix(countsDat))
   assert_that(is_validMetaData(s_sheet = s_sheet, columnsToCheck = columnsToCheck))
-  assert_that(is.number(PCx))
-  assert_that(is.number(PCy))
+  assert_that(is.numeric(PCx))
+  assert_that(is.numeric(PCy))
 
 }
 
