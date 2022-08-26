@@ -8,7 +8,9 @@ getPcaPlot(
   countsDat,
   s_sheet,
   pcaColFactor = "SampleGroup",
-  pcaShapeFac = NULL
+  pcaShapeFac = NULL,
+  PCx = 1,
+  PCy = 2
 )
 }
 \arguments{
@@ -19,6 +21,10 @@ getPcaPlot(
 \item{pcaColFactor}{a character vector with one value; column name in a sample sheet for PCA color aesthetic}
 
 \item{pcaShapeFac}{a character vector with one value; column name in a sample sheet for PCA shape aesthetic}
+
+\item{PCx}{an integer, X-axis PC, default is 1, that is PC1}
+
+\item{PCy}{an integer, Y-axis PC, default is 2, that is PC2}
 }
 \value{
 a plot

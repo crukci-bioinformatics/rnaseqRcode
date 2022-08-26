@@ -4,7 +4,7 @@
 \alias{correlationPlot}
 \title{Correlation plot from counts matrix}
 \usage{
-correlationPlot(countsMat, s_sheet)
+correlationPlot(countsMat, s_sheet, topN = 1000)
 }
 \arguments{
 \item{countsMat}{a counts matrix}

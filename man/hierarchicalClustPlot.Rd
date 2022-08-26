@@ -11,7 +11,8 @@ hierarchicalClustPlot(
   colorByCol = "SampleGroup",
   horizontal = TRUE,
   sampleColors = NULL,
-  title = ""
+  title = "",
+  topN = 1000
 )
 }
 \arguments{
@@ -26,6 +27,8 @@ hierarchicalClustPlot(
 \item{sampleColors}{a vector of colors; if NULL, colors are automatically assigned.}
 
 \item{title}{a character vector; the main title for the dendrogram.}
+
+\item{topN}{an integer; top highly variable genes}
 }
 \value{
 An object created by \code{ggplot}

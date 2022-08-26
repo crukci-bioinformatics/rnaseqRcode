@@ -4,12 +4,14 @@
 \alias{plotGeneBiotypes}
 \title{gives Gene biotypes read share}
 \usage{
-plotGeneBiotypes(countsData, gtf)
+plotGeneBiotypes(countsData, gtf, s_sheet)
 }
 \arguments{
 \item{countsData}{counts matrix}
 
 \item{gtf}{GRanges object}
+
+\item{s_sheet}{a data frame; sample metadata}
 }
 \value{
 An object created by \code{ggplot}

@@ -10,7 +10,7 @@ normFactorsBoxplot(dds)
 \item{dds}{a DESeqDataSet object; dds after applying estimateSizeFactors}
 }
 \value{
-An object created by \code{ggplot}
+A list that contains two plots created by \code{ggplot}
 }
 \description{
 gives normalization factors, raw and normalized counts distribution box plots

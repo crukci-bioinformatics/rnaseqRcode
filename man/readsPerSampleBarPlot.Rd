@@ -4,10 +4,12 @@
 \alias{readsPerSampleBarPlot}
 \title{barplot of read counts per sample.}
 \usage{
-readsPerSampleBarPlot(readCounts)
+readsPerSampleBarPlot(readCounts, s_sheet)
 }
 \arguments{
 \item{readCounts}{a data frame with at least two columns SampleName and fragments}
+
+\item{s_sheet}{a data frame; sample metadata with at lest two columns SampleName and SampleGroup}
 }
 \value{
 a ggplot object
