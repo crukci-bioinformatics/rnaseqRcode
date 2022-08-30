@@ -34,7 +34,6 @@ Imports:
     testthat,
     ggrepel,
     plotly
-
 biocViews: DESeq2, tximport, rtracklayer, ComplexHeatmap, GenomeInfoDb
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
