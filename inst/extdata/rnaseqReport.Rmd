@@ -17,8 +17,8 @@ output:
 
 ```{r setup, include=FALSE}
 # load libraries
-#suppressPackageStartupMessages(library(rnaseqRcode) )# Analysis R package
-devtools::load_all()
+suppressPackageStartupMessages(library(rnaseqRcode) )# Analysis R package
+#devtools::load_all()
 suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(DT))
 suppressPackageStartupMessages(library(RColorBrewer))
@@ -51,22 +51,25 @@ catHeader <- function(text = "", level = 3, is_tabset=FALSE) {
 
 ```{r def_vars} 
 # define variables
-projectName <- 'Test project'
-genome <- 'Mus_musculus'
-quantOut <- 'data/quantOut'
-tx2geneFile <- 'data/references/tx2gene.tsv'
-gtfFile <- 'data/references/mmu.GRCm38.gtf'
-contrastFile <- 'data/contrasts.csv'
-design <- '~SampleGroup'
-countsDir <- 'data/counts'
-factorName <- 'SampleGroup'
-DeOutDir <- 'data/DEAnalysis'
-pValCutoff <- 0.05
-genesToShow <- 'ESR1'
+# projectName <- 'Test project'
+# samplesheet <- 'data/samplesheet_corrected.csv'
+# genome <- 'Mus_musculus'
+# assembly <- 'GRCm38'
+# quantOut <- 'data/quantOut'
+# tx2geneFile <- 'data/references/tx2gene.tsv'
+# gtfFile <- 'data/references/mmu.GRCm38.gtf'
+# contrastFile <- 'data/contrasts.csv'
+# design <- '~SampleGroup'
+# countsDir <- 'data/counts'
+# factorName <- 'SampleGroup'
+# DeOutDir <- 'data/DEAnalysis'
+# pValCutoff <- 0.05
+# genesToShow <- 'ESR1'
+
 
 #################### LOAD DATA ######################################
 # load sample metadata
-s_sheet <- read_csv('data/samplesheet_corrected.csv', progress=FALSE, 
+s_sheet <- read_csv(samplesheet, progress=FALSE, 
                    show_col_types = FALSE) %>% 
   arrange(SampleGroup)
 
@@ -74,9 +77,9 @@ s_sheet <- read_csv('data/samplesheet_corrected.csv', progress=FALSE,
 tx2gene <- read_tsv(tx2geneFile, show_col_types = FALSE)
 
 # GTF
-#gtf <- loadGTF(gtfFile = gtfFile)
+gtf <- loadGTF(gtfFile = gtfFile)
 #saveRDS(object = gtf, file = 'data/gtf.rds')
-gtf <- readRDS('data/gtf.rds')
+#gtf <- readRDS('data/gtf.rds')
 # contrast table
 contTab <- read_csv(contrastFile, show_col_types = FALSE)
 ```
