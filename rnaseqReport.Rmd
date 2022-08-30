@@ -264,6 +264,12 @@ getPcaPlot(countsDat = trnCounts,
            PCy = 3)
 ```
 
+#### 3D PCA plot 
+
+```{r 3dPCA_plot}
+get3dPCAplot(countsDat = trnCounts, s_sheet = s_sheet, pcaColFactor = 'SampleGroup')
+
+```
 
 Above PCA plot shows the first two principal components of the variance-stabilizing-transformed raw counts. Each circle is a sample and samples are color-coded by sample group.
 
