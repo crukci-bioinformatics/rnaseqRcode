@@ -1,12 +1,9 @@
 ---
-title: "`projectName`"
-author: "Chandra Chilamakuri"
+title: "RNA-Seq Report: Project **`r projectName`**"
+author: "Bioinformatics Core"
 date: "`r format(Sys.time(), '%a %d %b %Y')`"
 output:
-  
-  
   html_document:
-
     theme: cerulean
     highlight: espresso
     toc: yes
@@ -14,6 +11,8 @@ output:
     smooth_scroll: yes
     code_folding: hide
 ---
+
+
 
 ```{r setup, include=FALSE}
 # load libraries
@@ -48,39 +47,30 @@ catHeader <- function(text = "", level = 3, is_tabset=FALSE) {
 
 
 
+```{r variable_substitute}
+
+pValCutoff <- as.numeric(pValCutoff)
+```
+
+## Introduction  
+
+* This report summarizes a differential gene expression analysis of the
+**`r projectName`** project.
+* Genome: **`r genome`**  
+* Assembly: **`r assembly`**
+* Design: **`r design`**
+
 
 ```{r def_vars} 
-# define variables
-# projectName <- 'Test project'
-# samplesheet <- 'data/samplesheet_corrected.csv'
-# genome <- 'Mus_musculus'
-# assembly <- 'GRCm38'
-# quantOut <- 'data/quantOut'
-# tx2geneFile <- 'data/references/tx2gene.tsv'
-# gtfFile <- 'data/references/mmu.GRCm38.gtf'
-# contrastFile <- 'data/contrasts.csv'
-# design <- '~SampleGroup'
-# countsDir <- 'data/counts'
-# factorName <- 'SampleGroup'
-# DeOutDir <- 'data/DEAnalysis'
-# pValCutoff <- 0.05
-# genesToShow <- 'ESR1'
-
-
-#################### LOAD DATA ######################################
-# load sample metadata
+# load data
 s_sheet <- read_csv(samplesheet, progress=FALSE, 
                    show_col_types = FALSE) %>% 
   arrange(SampleGroup)
 
-# load tx2gene data
 tx2gene <- read_tsv(tx2geneFile, show_col_types = FALSE)
 
-# GTF
 gtf <- loadGTF(gtfFile = gtfFile)
-#saveRDS(object = gtf, file = 'data/gtf.rds')
-#gtf <- readRDS('data/gtf.rds')
-# contrast table
+
 contTab <- read_csv(contrastFile, show_col_types = FALSE)
 ```
 
@@ -143,7 +133,6 @@ readsPerSample <- getReadCountsFromSalmonLogs(s_sheet = s_sheet,
   mutate(fragments = fragments / 1000000) %>% 
   mutate(fragments = round(fragments, digits = 2))
   
-
 readsPerSample %>% 
   datatable(caption = 'Reads per sample (million)') 
 
@@ -271,7 +260,6 @@ getPcaPlot(countsDat = trnCounts,
 
 ```{r 3dPCA_plot}
 get3dPCAplot(countsDat = trnCounts, s_sheet = s_sheet, pcaColFactor = 'SampleGroup')
-
 ```
 
 Above PCA plot shows the first two principal components of the variance-stabilizing-transformed raw counts. Each circle is a sample and samples are color-coded by sample group.
@@ -408,9 +396,6 @@ for( i in 1:nrow(contTab)){
   
   print(p_ma)
   
-  #cat('\n\n\nThis is MA plot, on X axis is averege gene expression, on Y-axis log 2 fold chages.\n\n\n')
-  
-  
   # volcano plot
   catHeader(text = 'volcano plot', level = 4)
   
@@ -448,7 +433,6 @@ for( i in 1:nrow(contTab)){
   # gene counts plot
   catHeader(text = 'Gene counts plot', level = 4)
   
-  
   geneCtsPlot <- getGeneCountsPlot(dds=dds,
                   numerator = numerator, 
                   denominator = denominator,
@@ -458,8 +442,6 @@ for( i in 1:nrow(contTab)){
                   topN=10, 
                   genesToShow=genesToShow)
   print(geneCtsPlot)
-  
-  
 
 }
 
