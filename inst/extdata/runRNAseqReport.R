@@ -1,8 +1,8 @@
-suppressMessages(library(optparse))
+suppressPackageStartupMessages(library(optparse))
 suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(assertthat))
 suppressPackageStartupMessages(library(rmarkdown))
-#########################################################################################
+##################### START OF FUNCTIONS #######################################
 # parse command line options
 mkOptParser <- function() {
   options <- list(
@@ -73,9 +73,9 @@ getUserPlayableRmd <- function(rawRmd, varFile, titleName) {
 }
 
 
-
-
 rnaSeqReport <- function(opts){
+
+  genome = opts$genome
 
   varList <- list(
     projectName = opts$project,
@@ -113,17 +113,14 @@ rnaSeqReport <- function(opts){
   templateDir = opts$templateDir
   reportFile = opts$reportFile
 
-
   reportTemplate = system.file("extdata/rnaSeqReport.Rmd",package = "rnaseqRcode")
   assert_that(reportTemplate != "",msg = "reportTemplate missing")
 
-
   reportWritableTemplate <- file.path(templateDir,basename(reportTemplate))
-  file.copy(reportTemplate,reportWritableTemplate, overwrite = FALSE)
+  file.copy(reportTemplate,reportWritableTemplate, overwrite = TRUE)
 
   tempDir <- tempdir()
   render(reportWritableTemplate,
-         # reportFile : need to resolve this
          output_file = reportFile,
          intermediates_dir = tempDir,
          knit_root_dir = tempDir,
@@ -137,18 +134,18 @@ rnaSeqReport <- function(opts){
   getUserPlayableRmd(rawRmd = reportWritableTemplate,
                      varFile = varFile,
                      titleName = projectName)
-
 }
+##################### END OF FUNCTIONS #######################################
 
-
-
-#########################################################################################
 # Rscript runRNAseqReport.R --samplesheet=/Users/chilam01/Desktop/rnaseqRcode/data/samplesheet_corrected.csv --project=test_project --genome=Mus_musculus --assembly=GRCm38 --quantOut=/Users/chilam01/Desktop/rnaseqRcode/data/quantOut --tx2geneFile=/Users/chilam01/Desktop/rnaseqRcode/data/references/tx2gene.tsv --gtfFile="/Users/chilam01/Desktop/rnaseqRcode/data/references/mmu.GRCm38.gtf" --contrastFile="/Users/chilam01/Desktop/rnaseqRcode/data/contrasts.csv" --design=SampleGroup --countsDir="/Users/chilam01/Desktop/rnaseqRcode/data/counts" --factorName=SampleGroup --DeOutDir=/Users/chilam01/Desktop/rnaseqRcode/data/DEAnalysis/test1  --pValCutoff=0.05 --genesToShow=ESR1 --templateDir=/Users/chilam01/Desktop/rnaseqRcode/temp --reportFile=/Users/chilam01/Desktop/rnaseqRcode/temp/xxx.html
 options(stringsAsFactors=FALSE)
+# get arguments
 parser <- mkOptParser()
-#parser
+
+# parse arguments
 cmdLine <- parse_args(parser, args=commandArgs(trailingOnly=TRUE),
                       positional_arguments=TRUE)
+
 opts <- cmdLine$options
 
 rnaSeqReport(opts)
