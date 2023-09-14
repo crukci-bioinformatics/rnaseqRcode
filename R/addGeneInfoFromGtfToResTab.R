@@ -17,7 +17,7 @@ addGeneInfoFromGtfToResTab <- function(res,gtf){
     as.data.frame() %>%
     filter(type=='gene') %>%
     dplyr::select(gene_id, gene_name, chr=seqnames, start, end, strand, gene_biotype) %>%
-    mutate(gene_name=toupper(gene_name)) %>%
+    #mutate(gene_name=toupper(gene_name)) %>%
     mutate(gene_biotype = str_replace_all(gene_biotype, '_', ' '))
 
   res <- res %>%

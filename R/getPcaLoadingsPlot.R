@@ -49,7 +49,7 @@ getPcaLoadingsPlot <- function(countsData, s_sheet, gtf, topN= 10, genesToShow=N
     as.data.frame() %>%
     filter(type == 'gene' ) %>%
     select(gene_id, gene_name) %>%
-    mutate(gene_name = toupper(gene_name)) %>%
+    #mutate(gene_name = toupper(gene_name)) %>%
     filter(!duplicated(gene_id))
 
   plotData <- left_join(loadings, geneTab, by='gene_id') %>%
