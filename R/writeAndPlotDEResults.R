@@ -45,13 +45,18 @@ writeAndPlotDEResults <- function(dds, factorName, numerator, denominator, DeOut
 
 
   contr <- c(factorName, numerator, denominator)
-  res <- results(dds, contrast=contr, alpha=pValCutoff) %>%
-    as.data.frame()
-  res <- addGeneInfoFromGtfToResTab(res=res, gtf=gtf)
+  res <- results(dds, contrast=contr, alpha=pValCutoff) 
 
-  shrinkRes <- lfcShrink(dds=dds, contrast=contr, type='ashr') %>%
+  shrinkRes <- lfcShrink(dds=dds, contrast=contr, type='ashr', res=res) %>%
     as.data.frame()
+  
   shrinkRes <- addGeneInfoFromGtfToResTab(res=shrinkRes, gtf=gtf)
+  
+  res <- res %>%
+    as.data.frame()
+  
+  res <- addGeneInfoFromGtfToResTab(res=res, gtf=gtf)
+  
 
 
   deOutFile <- str_c(factorName,numerator, 'vs', denominator, sep='_') %>%
