@@ -21,6 +21,7 @@ argCheck_riboFractionPlot <- function(countsData, gtf, s_sheet){
 #' @importFrom tidyr pivot_longer
 #' @importFrom forcats fct_relevel
 #' @importFrom tibble rownames_to_column
+#' @importFrom tidyr replace_na
 
 
 riboFractionPlot <- function(countsData, gtf, s_sheet){
@@ -35,7 +36,7 @@ riboFractionPlot <- function(countsData, gtf, s_sheet){
   gtf <- gtf %>%
     .[.$type == 'gene'] %>%
     .[!str_detect(.$gene_biotype, 'pseudogene' )] %>%
-    .[str_detect(.$gene_name, regex('^RP[LS]', ignore_case = TRUE) ) | .$gene_biotype == 'rRNA' ]
+    .[str_detect(replace_na(.$gene_name, ''), regex('^RP[LS]', ignore_case = TRUE) ) | .$gene_biotype == 'rRNA' ]
 
   countsData <- countsData[ rowSums(countsData) > 0, ] %>%
     as.data.frame() %>%

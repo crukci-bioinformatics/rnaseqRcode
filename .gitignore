@@ -11,3 +11,7 @@ run_rmd.R
 temp
 temp2
 rnaseqRcode.Rproj
+_DESCRIPTION
+test_data
+Rplots.pdf
+.Rbuildignore

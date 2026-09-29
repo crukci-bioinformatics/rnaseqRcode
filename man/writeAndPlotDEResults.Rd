@@ -35,6 +35,3 @@ a data frame after \code{lfcShrink} applied
 \description{
 write DE results and create plots for each contrast
 }
-\examples{
-
-}

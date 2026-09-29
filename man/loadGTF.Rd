@@ -7,7 +7,7 @@
 loadGTF(gtfFile)
 }
 \arguments{
-\item{gtfFile;}{a string}
+\item{gtfFile}{a string}
 }
 \value{
 a GRanges object

@@ -17,6 +17,3 @@ a ggplot object
 \description{
 barplot of read counts per sample.
 }
-\examples{
-
-}

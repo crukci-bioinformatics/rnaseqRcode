@@ -23,6 +23,3 @@ An object created by \code{ggplot}
 \description{
 Gives PCA loadings rank plot
 }
-\examples{
-
-}

@@ -21,6 +21,3 @@ a DESeqDataSet object
 \description{
 Create DDS object and do basic DE
 }
-\examples{
-
-}

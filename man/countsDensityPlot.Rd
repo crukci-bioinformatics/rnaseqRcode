@@ -17,6 +17,3 @@ An object created by \code{ggplot}
 \description{
 count density plot
 }
-\examples{
-
-}

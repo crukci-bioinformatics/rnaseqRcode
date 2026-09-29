@@ -17,6 +17,3 @@ a matrix
 \description{
 Gives top highly variable genes
 }
-\examples{
-
-}

@@ -17,6 +17,3 @@ An object created by \code{ggplot}
 \description{
 Gives library complexity plot
 }
-\examples{
-
-}

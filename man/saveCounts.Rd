@@ -18,6 +18,3 @@ saveCounts(dds, txi, countsDir, gtf)
 \description{
 write counts data
 }
-\examples{
-
-}

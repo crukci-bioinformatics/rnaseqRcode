@@ -13,9 +13,6 @@ getHeatmap(dds, topN = 500, annoGroup = "SampleGroup")
 
 \item{annoGroup}{a character vector; one more meta data column names for annotating heat-map. Default is SampleGroup}
 }
-\value{
-
-}
 \description{
 Gives heat-map
 }

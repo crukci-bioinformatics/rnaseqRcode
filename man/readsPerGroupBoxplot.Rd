@@ -17,6 +17,3 @@ An object created by \code{ggplot}
 \description{
 Sample group read counts distribution box plot
 }
-\examples{
-
-}

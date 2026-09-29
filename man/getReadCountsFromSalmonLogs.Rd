@@ -17,6 +17,3 @@ a data frame; sample and number of fragments table.
 \description{
 gets reads pre sample table from salmon log files
 }
-\examples{
-
-}

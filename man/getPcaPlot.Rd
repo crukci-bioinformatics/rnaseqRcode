@@ -32,6 +32,3 @@ a plot
 \description{
 get PCA plots given counts matrix and sample sheet
 }
-\examples{
-
-}

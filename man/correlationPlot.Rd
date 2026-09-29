@@ -10,13 +10,9 @@ correlationPlot(countsMat, s_sheet, topN = 1000)
 \item{countsMat}{a counts matrix}
 
 \item{s_sheet}{a data frame; sample meta data sheet}
-}
-\value{
 
+\item{topN}{integer; number of top variable genes to use}
 }
 \description{
 Correlation plot from counts matrix
-}
-\examples{
-
 }

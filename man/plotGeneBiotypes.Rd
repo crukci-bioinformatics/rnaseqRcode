@@ -19,6 +19,3 @@ An object created by \code{ggplot}
 \description{
 gives Gene biotypes read share
 }
-\examples{
-
-}

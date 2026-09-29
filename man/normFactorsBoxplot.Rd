@@ -15,6 +15,3 @@ A list that contains two plots created by \code{ggplot}
 \description{
 gives normalization factors, raw and normalized counts distribution box plots
 }
-\examples{
-
-}

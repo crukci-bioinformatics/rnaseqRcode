@@ -38,6 +38,3 @@ An object created by \code{ggplot}
 \description{
 Gives read counts scater plot for topN genes
 }
-\examples{
-
-}

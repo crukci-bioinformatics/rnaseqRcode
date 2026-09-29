@@ -17,6 +17,3 @@ Boolean value
 \description{
 check if the metadata is valid
 }
-\examples{
-
-}

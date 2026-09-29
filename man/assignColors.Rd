@@ -17,6 +17,3 @@ a named vector of colors
 \description{
 Assign colors to samples / sample groups
 }
-\examples{
-
-}

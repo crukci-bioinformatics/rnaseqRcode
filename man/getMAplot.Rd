@@ -32,6 +32,3 @@ An object created by \code{ggplot}
 \description{
 returns MA plot
 }
-\examples{
-
-}

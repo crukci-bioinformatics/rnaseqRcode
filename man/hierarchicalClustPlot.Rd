@@ -37,6 +37,3 @@ An object created by \code{ggplot}
 Hierarchical clustering plot
 Computes and displays hierarchical clustering plot for samples in a given counts data
 }
-\examples{
-
-}

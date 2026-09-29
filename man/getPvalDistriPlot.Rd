@@ -21,6 +21,3 @@ An object created by \code{ggplot}
 \description{
 Gives p value distribution plot
 }
-\examples{
-
-}
