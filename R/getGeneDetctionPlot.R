@@ -21,7 +21,7 @@ checkArg_getGeneDetctionPlot <- function(s_sheet, countsData, thresholds){
 #' @importFrom magrittr %>%
 #' @importFrom tibble rownames_to_column
 #' @importFrom tidyr pivot_longer
-#' @importFrom dplyr arrange group_by desc summarize filter mutate left_join
+#' @importFrom dplyr arrange group_by desc summarize filter mutate left_join row_number
 
 getGeneDetctionPlot <- function(countsData, s_sheet, thresholds=seq(0,50, by=5)){
 
@@ -34,10 +34,9 @@ getGeneDetctionPlot <- function(countsData, s_sheet, thresholds=seq(0,50, by=5))
     pivot_longer(-gene_id, names_to = "SampleName", values_to = "counts") %>%
     arrange(desc(counts)) %>%
     group_by(SampleName) %>%
-    summarize(
+    mutate(
       detection_threshold = counts,
-      number_of_genes = row_number(),
-      .groups = "drop"
+      number_of_genes = row_number()
     ) %>%
     group_by(SampleName, detection_threshold) %>%
     summarize(number_of_genes = max(number_of_genes), .groups = "drop") %>%
