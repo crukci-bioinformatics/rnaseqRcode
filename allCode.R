@@ -4,14 +4,12 @@ library(devtools)
 library(tximport)
 library(tidyverse)
 library(DESeq2)
-s_sheet <- read_csv("test_data/tiny_samplesheet_v1.0.csv") %>%
-  #arrange(SampleGroup,Replicate) %>%
-  arrange(SampleGroup) %>%
+s_sheet <- read_csv("data/samplesheet_corrected.csv") %>%
+  arrange(SampleGroup,Replicate) %>%
   mutate(SampleName=factor(SampleName, levels = SampleName))
 
-quantOut <- "test_data/quantOut"
-#tx2gene <- read_tsv("data/references/tx2gene.tsv")
-tx2gene <- read_tsv("test_data/tx2gene.tsv")
+quantOut <- "data/quantOut"
+tx2gene <- read_tsv("data/references/tx2gene.tsv")
 
 use_r('importSampleTxiAndSaveRds')
 
@@ -39,7 +37,7 @@ use_r('importSampleTxiAndSaveRds')
 document()
 
 txi <- importSampleTxiAndSaveRds(s_sheet = s_sheet,
-                                 quantOut = 'test_data/quantOut',
+                                 quantOut = 'data/quantOut',
                                  tx2gene = tx2gene)
 ###################################################################################
 # transformCounts
@@ -125,7 +123,7 @@ correlationPlot(countsMat = trnCounts, s_sheet = s_sheet, topN=1000)
 
 ###################################################################################
 # Fraction of ribosomal genes
-gtf <- loadGTF(gtfFile = 'test_data/mmu.GRCm39.gtf')
+gtf <- loadGTF(gtfFile = 'data/references/mmu.GRCm38.gtf')
 use_r('riboFractionPlot')
 riboFractionPlot(countsData = rawCounts, gtf = gtf, s_sheet = s_sheet )
 ###################################################################################
@@ -161,7 +159,7 @@ print(nomSplots$pNormCounts)
 ###################################################################################
 # save counts after adding gene symbols
 use_r('saveCounts')
-countsDir <- 'test_data/counts'
+countsDir <- 'data/counts'
 saveCounts(dds = dds, txi = txi, countsDir = countsDir, gtf = gtf )
 ###################################################################################
 
@@ -170,9 +168,9 @@ saveCounts(dds = dds, txi = txi, countsDir = countsDir, gtf = gtf )
 # write DE results
 contrastFile = 'contrasts.csv'
 factorName <- 'SampleGroup'
-numerator <- 's_4T1_L_Foxc2'
-denominator <- 's_4T1_L_EV'
-DeOutDir <- 'test_data/DE_analysis/'
+numerator <- 'Infected_d33'
+denominator <- 'Uninfected_d33'
+DeOutDir <- 'data/DEAnalysis/'
 pValCutoff <- 0.05
 use_r("writeAndPlotDEResults")
 

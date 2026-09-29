@@ -1,6 +1,6 @@
 #' Title
 #'
-#' @param gtfFile a string
+#' @param gtfFile; a string
 #'
 #' @return a GRanges object
 #' @export loadGTF

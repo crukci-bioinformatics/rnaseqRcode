@@ -8,7 +8,6 @@ checkArg_correlationPlot <- function(countsMat, s_sheet, topN){
 #'
 #' @param countsMat a counts matrix
 #' @param s_sheet  a data frame; sample meta data sheet
-#' @param topN integer; number of top variable genes to use
 #'
 #' @return
 #' @export correlationPlot

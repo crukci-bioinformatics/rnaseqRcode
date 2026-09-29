@@ -14,7 +14,7 @@ checkArg_getReadCountsFromSalmonLogs <- function(s_sheet, quantOut, logFiles){
 #'
 #' @examples
 #'
-#' @importFrom stringr str_c str_detect str_extract regex
+#' @importFrom stringr str_c str_detect str_split
 #' @importFrom magrittr %>%
 #' @importFrom purrr map_df
 #' @importFrom tidyr pivot_longer
@@ -33,8 +33,9 @@ getReadCountsFromSalmonLogs <- function(s_sheet, quantOut){
   readCounts <- logFiles %>%
     map_df( function(x){
       readLines(x) %>%
-        .[str_detect(., regex('^observed fragments', ignore_case = TRUE))] %>%
-        str_extract('[0-9]+') %>%
+        .[str_detect(.,'^Observed')] %>%
+        str_split(., ' ', simplify=TRUE) %>%
+        .[1,2] %>%
         as.integer()
     }) %>%
     pivot_longer(cols = everything(), names_to = 'SampleName', values_to = 'fragments')
